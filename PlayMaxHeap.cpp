@@ -110,18 +110,20 @@ void PlayMaxHeap::readDataAndPushIntoHeap(const string& filename, priority_queue
 
 //gives result based on given current situation and all given situations for maxHeap
 void PlayMaxHeap::suggestPlayFromHeap(const Play& currentSituation, priority_queue<Play, vector<Play>, ComparePlay>& maxHeap) {
-    Play bestPlay = maxHeap.top();
+    //copies it so that the heap can be reused multiple times each run
+    priority_queue<Play, vector<Play>, ComparePlay> modifiableHeap = maxHeap;
+    Play bestPlay = modifiableHeap.top();
 
+    //stores similar situations
     priority_queue<Play, vector<Play>, ComparePlay> tempHeap;
 
-    //bounds for toGo
-    int toGoLowerBound = Helpers::calculateToGoBounds(bestPlay.toGo)[0];
-    int toGoUpperBound = Helpers::calculateToGoBounds(bestPlay.toGo)[1];
+    //initialize bounds
+    int toGoLowerBound;
+    int toGoUpperBound;
+    int yardLineLowerBound;
+    int yardLineUpperBound;
 
-    //bounds for yardLine
-    int yardLineLowerBound = Helpers::calculateYardLineBounds(bestPlay.yardLine)[0];
-    int yardLineUpperBound = Helpers::calculateYardLineBounds(bestPlay.yardLine)[1];
-
+    //initialize counters
     int firstDowns = 0;
     int touchdowns = 0;
     int conversions = 0;
@@ -135,17 +137,16 @@ void PlayMaxHeap::suggestPlayFromHeap(const Play& currentSituation, priority_que
     //map<playType, map<subPlayType, numOfSuccesses>>
     map<string, map<string,int>> playTypeSuccessMap = {};
 
-    while (!maxHeap.empty()) {
-        Play currentPlay = maxHeap.top();
+    while (!modifiableHeap.empty()) {
+        Play currentPlay = modifiableHeap.top();
         //bounds for toGo
         toGoLowerBound = Helpers::calculateToGoBounds(currentPlay.toGo)[0];
         toGoUpperBound = Helpers::calculateToGoBounds(currentPlay.toGo)[1];
-
         //bounds for yardLine
         yardLineLowerBound = Helpers::calculateYardLineBounds(currentPlay.yardLine)[0];
         yardLineUpperBound = Helpers::calculateYardLineBounds(currentPlay.yardLine)[1];
 
-        maxHeap.pop();
+        modifiableHeap.pop();
 
         if (currentPlay.down == currentSituation.down && currentSituation.toGo > toGoLowerBound
             && currentSituation.toGo < toGoUpperBound && currentSituation.yardLine > yardLineLowerBound

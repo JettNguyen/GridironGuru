@@ -10,7 +10,7 @@
 using namespace std;
 
 int main() {
-    const string filename = "pbp-2023 1.csv";
+    const string filename = "pbp2013-2023.csv";
 
     //for maxHeap
     priority_queue<Play, vector<Play>, ComparePlay> maxHeap;
@@ -23,6 +23,8 @@ int main() {
     cout << "                                 Developed by Jett Nguyen, Zach Ostroff, and William Shaoul\n\n";
     string input;
     string dataStructure;
+    static bool heapUsed = false;
+    static bool hashTableUsed = false;
 
     //to read in all inputs from user
     while (true) {
@@ -43,12 +45,18 @@ int main() {
             cout << "Input the number 1 or 2  below:\n";
             cin >> dataStructure;
         }
-        cout << "Building...\n";
-        if (dataStructure == "1") {
+
+        if (dataStructure == "1" && !heapUsed) {
             //for maxHeap
+            cout << "Building Heap...\n";
+            //so that the heap is not built again during the run
+            heapUsed = true;
             PlayMaxHeap::readDataAndPushIntoHeap(filename, maxHeap);
         }
-        else {
+        else if (dataStructure == "2" && !hashTableUsed){
+            cout << "Building Hash Table...\n";
+            //so that the hash table is not built again during the run
+            hashTableUsed = true;
             /*
             //for hash table
 
@@ -116,7 +124,7 @@ int main() {
             currentSituation.isTwoPointConversion = false;
         }
 
-        cout << "Analyzing over 250,000 plays...\n";
+        cout << "Analyzing over 485,000 plays from 2013-2023...\n";
 
         if (dataStructure == "1") {
             //for maxHeap structure
