@@ -9,8 +9,8 @@ struct Play {
     string gameDate;
     int quarter;
     int minutes;
-    int gameSection;
     int seconds;
+    int timeAsInt;
     string offense;
     string defense;
     int down;
@@ -33,6 +33,7 @@ struct Play {
     bool isInterception;
     float interceptionWeight;
     bool isFumble;
+    float fumbleWeight;
     bool isTwoPointConversion;
     bool isTwoPointConversionSuccessful;
     float twoPointWeight;

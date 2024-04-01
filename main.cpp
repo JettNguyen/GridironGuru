@@ -29,7 +29,9 @@ int main() {
     //to read in all inputs from user
     while (true) {
         cout << "Provide the downs, yards to go, time left, and current position on the field ";
-        cout << "and we can tell you the best suggested play\nto convert a 1st down or score a touchdown!\n";
+        cout << "and we can tell you the best suggested play\nto convert a 1st down, score a touchdown, ";
+        cout << "field goal, or two point conversion!\n";
+        cout << "For two point conversions, please input the down and yards to go as \"0\".\n";
         cout << "(Input \"exit\" at any time to exit the program)\n\n";
 
         Play currentSituation;
@@ -114,10 +116,10 @@ int main() {
             cin >> input;
         }
         currentSituation.minutes = stoi(to_string(input[0]-'0') + to_string(input[1]-'0'));
-        currentSituation.gameSection = Helpers::calculateGameSection(currentSituation.minutes);
         currentSituation.seconds = stoi(to_string(input[3]-'0') + to_string(input[4]-'0'));
+        currentSituation.timeAsInt = Helpers::timeToInt(currentSituation.minutes, currentSituation.seconds);
 
-        if (currentSituation.down == 0 && currentSituation.toGo == 0 && (currentSituation.yardLine == 98 || currentSituation.yardLine == 99) && currentSituation.playType != "EXTRA POINT") {
+        if (currentSituation.down == 0 && currentSituation.toGo == 0 && (currentSituation.yardLine == 98 || currentSituation.yardLine == 99)) {
             currentSituation.isTwoPointConversion = true;
         }
         else {

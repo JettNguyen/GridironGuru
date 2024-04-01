@@ -1,5 +1,3 @@
-
-#include <string>
 #include "Play.h"
 
 using namespace std;
@@ -10,8 +8,8 @@ Play::Play(){
     gameDate = "";
     quarter = -1;
     minutes = 0;
-    gameSection = 0;
     seconds = 0;
+    timeAsInt = 0;
     offense = "";
     defense = "";
     down = -1;
@@ -34,6 +32,7 @@ Play::Play(){
     isInterception = true;
     interceptionWeight = 0.0f;
     isFumble = true;
+    fumbleWeight = 0.0f;
     isTwoPointConversion = false;
     isTwoPointConversionSuccessful = false;
     twoPointWeight = 0.0f;

@@ -78,43 +78,94 @@ bool Helpers::booleanResult(int boolValue) {
 
 float Helpers::calculateWeight(int yards) {
     if (yards < 0) {
-        return 0.0f - pow(yards, 0.75);
+        return 0.0f - static_cast<float>(pow(yards, 0.75));
     }
     else {
-        return pow(yards, 0.75);
+        return static_cast<float>(pow(yards, 0.75));
     }
 }
 
-int Helpers::calculateGameSection(int minute) {
-    if (0 <= minute && minute < 3) {
-        return 1;
+vector<int> Helpers::calculateTimeBounds(int minute ,int second) {
+    //returns vector of time bounds that are +- 1:30 from given time
+    //this range is tight enough to give a very similar situation but loose enough to find a good amount
+    //[lowerTimeAsInt, upperTimeAsInt]
+    vector<int> timeBounds;
+    int lowerMinute = 0;
+    int upperMinute;
+    int lowerSecond;
+    int upperSecond;
+
+
+    //push back lower bound
+    //will have to subtract 2 minutes if condition is met
+    if (second < 30) {
+        if (minute < 2) {
+            lowerMinute = 0;
+        }
+        else {
+            lowerMinute += minute-2;
+        }
+        lowerSecond = 60+(second-30);
     }
-    else if (3 <= minute && minute < 6) {
-        return 2;
+    else {
+        lowerMinute = minute-1;
+        lowerSecond = second-30;
     }
-    else if (6 <= minute && minute < 9) {
-        return 3;
+    timeBounds.push_back(timeToInt(lowerMinute, lowerSecond));
+
+    //push back upper bound
+    if (second >= 30) {
+        if (minute > 13) {
+            upperMinute = 15;
+        }
+        else {
+            upperMinute = minute+2;
+        }
+        upperSecond = (second+30)-60;
     }
-    else if (9 <= minute && minute < 12) {
-        return 4;
+    else {
+        upperMinute = minute+1;
+        upperSecond = second+30;
     }
-    else if (12 <= minute && minute <= 15) {
-        return 5;
+    timeBounds.push_back(timeToInt(upperMinute, upperSecond));
+
+    return timeBounds;
+}
+
+int Helpers::timeToInt(int minute, int second) {
+    string returnString;
+    int time;
+
+    returnString += to_string(minute);
+    if (second < 10) {
+        returnString += "0" + to_string(second);
     }
+    else {
+        returnString += to_string(second);
+    }
+
+    time = stoi(returnString);
+    return time;
 }
 
 vector<int> Helpers::calculateToGoBounds(int toGo) {
     vector<int> toGoBounds = {};
-    //can't go below 0
-    if (toGo < 1) {
-        toGoBounds.push_back(0);
+
+    //for two point conversion cases, it will always be 0
+    if (toGo == 0) {
+        return {0, 0};
+    }
+
+    //can't go below 1, 0 toGo in .csv file is for placeholders
+    if (toGo < 2) {
+        toGoBounds.push_back(1);
     }
     else {
         toGoBounds.push_back(toGo-1);
     }
-    //cant go above 100
-    if (toGo > 99) {
-        toGoBounds.push_back(100);
+    //can't go above 99
+    if (toGo > 98) {
+        toGoBounds.push_back(99);
     }
     else {
         toGoBounds.push_back(toGo+1);
@@ -124,6 +175,7 @@ vector<int> Helpers::calculateToGoBounds(int toGo) {
 
 vector<int> Helpers::calculateYardLineBounds(int yardLine) {
     vector<int> yardLineBounds = {};
+
     //can't go below 0
     if (yardLine < 5) {
         yardLineBounds.push_back(0);
@@ -131,9 +183,10 @@ vector<int> Helpers::calculateYardLineBounds(int yardLine) {
     else {
         yardLineBounds.push_back(yardLine-5);
     }
-    //cant go above 100
-    if (yardLine > 95) {
-        yardLineBounds.push_back(100);
+    //can't go above 100
+    //but 100 is for placeholders in the .csv file, so limit to 99
+    if (yardLine > 94) {
+        yardLineBounds.push_back(99);
     }
     else {
         yardLineBounds.push_back(yardLine+5);
@@ -152,25 +205,25 @@ string Helpers::formatPercentages(float percentage) {
     return newPercentage;
 }
 
-string Helpers::formatTime(int min, int sec) {
-    string timeString = "";
+string Helpers::formatTime(int minute, int second) {
+    string timeString;
 
     //for minutes
-    if (min < 10) {
-        timeString += "0" + to_string(min);
+    if (minute < 10) {
+        timeString += "0" + to_string(minute);
     }
     else {
-        timeString += to_string(min);
+        timeString += to_string(minute);
     }
 
     timeString += ":";
 
     //for seconds
-    if (sec < 10) {
-        timeString += "0" + to_string(sec);
+    if (second < 10) {
+        timeString += "0" + to_string(second);
     }
     else {
-        timeString += to_string(sec);
+        timeString += to_string(second);
     }
 
     return timeString;

@@ -10,7 +10,9 @@ public:
 
     static float calculateWeight(int yards);
 
-    static int calculateGameSection(int minute);
+    static vector<int> calculateTimeBounds(int minute, int second);
+
+    static int timeToInt(int minute, int second);
 
     static vector<int> calculateToGoBounds(int toGo);
 
@@ -18,6 +20,6 @@ public:
 
     static string formatPercentages(float percentage);
 
-    static string formatTime(int min, int sec);
+    static string formatTime(int minute, int second);
 
 };
