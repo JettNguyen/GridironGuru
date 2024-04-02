@@ -19,7 +19,7 @@ int main() {
 
 
     //welcome screen
-    cout << "\n============================================= Welcome to the Gridiron Guru! ============================================\n";
+    cout << "\n============================================= Welcome to the Gridiron Guru! =============================================\n";
     cout << "                                 Developed by Jett Nguyen, Zach Ostroff, and William Shaoul\n\n";
     string input;
     string dataStructure;
@@ -28,8 +28,8 @@ int main() {
 
     //to read in all inputs from user
     while (true) {
-        cout << "Provide the downs, yards to go, time left, and current position on the field ";
-        cout << "and we can tell you the best suggested play\nto convert a 1st down, score a touchdown, ";
+        cout << "Provide the quarter, down, yards to go, time left, and current position on the field ";
+        cout << "and we can tell you the best\nsuggested play(s) to convert a 1st down, score a touchdown, ";
         cout << "field goal, or two point conversion!\n";
         cout << "For two point conversions, please input the down and yards to go as \"0\".\n";
         cout << "(Input \"exit\" at any time to exit the program)\n\n";
@@ -65,60 +65,74 @@ int main() {
             */
         }
 
+        //prompt current qtr
+        cout << "Input current QUARTER as a number 1-4 below:\n";
+        cin >> input;
+        if (input == "exit") {
+            break;
+        }
+        //validates input for given prompt
+        while (!Helpers::validateInput(input, "int", 1, 4)) {
+            cout << "Input current QUARTER as a number 1-4 below:\n";
+            cin >> input;
+        }
+        currentSituation.quarter = stoi(input);
+
         //prompt current down
-        cout << "Input current Down as a number 1-4 below:\n";
+        cout << "Input current DOWN as a number 0-4 below:\n";
         cin >> input;
         if (input == "exit") {
             break;
         }
         //validates input for given prompt
         while (!Helpers::validateInput(input, "int", 0, 4)) {
-            cout << "Input current Down as a number 1-4 below:\n";
+            cout << "Input current DOWN as a number 0-4 below:\n";
             cin >> input;
         }
         currentSituation.down = stoi(input);
 
         //prompt yards to go
-        cout << "Input yards to go as a number 1-100 below:\n";
+        cout << "Input YARDS TO GO as a number 0-99 below:\n";
         cin >> input;
         if (input == "exit") {
             break;
         }
         //validates input for given prompt
-        while (!Helpers::validateInput(input, "int", 0, 100)) {
-            cout << "Input yards to go as a number 1-100 below:\n";
+        while (!Helpers::validateInput(input, "int", 0, 99)) {
+            cout << "Input YARDS TO GO as a number 0-99 below:\n";
             cin >> input;
         }
         currentSituation.toGo = stoi(input);
 
         //prompt position
-        cout << "Input current field position as a number 1-100 below:\n";
+        cout << "Input current FIELD POSITION as a number 1-99 below (0 is your goal line, 100 is opponent's goal line):\n";
         cin >> input;
         if (input == "exit") {
             break;
         }
         //validates input for given prompt
-        while (!Helpers::validateInput(input, "int", 0, 100)) {
-            cout << "Input current field position as a number 1-100 below:\n";
+        while (!Helpers::validateInput(input, "int", 1, 99)) {
+            cout << "Input current FIELD POSITION as a number 1-99 below (0 is your goal line, 100 is opponent's goal line):\n";
             cin >> input;
         }
         currentSituation.yardLine = stoi(input);
 
         //prompt time
-        cout << "Input time left in game in mm:ss below\n";
+        cout << "Input TIME LEFT in quarter in mm:ss below\n";
         cin >> input;
         if (input == "exit") {
             break;
         }
         //validates input for given prompt
         while (!Helpers::validateInput(input, "time", 0, 0)) {
-            cout << "Input time left in game in mm:ss below\n";
+            cout << "Input TIME LEFT in quarter in mm:ss below\n";
             cin >> input;
         }
         currentSituation.minutes = stoi(to_string(input[0]-'0') + to_string(input[1]-'0'));
         currentSituation.seconds = stoi(to_string(input[3]-'0') + to_string(input[4]-'0'));
         currentSituation.timeAsInt = Helpers::timeToInt(currentSituation.minutes, currentSituation.seconds);
 
+        //checks if inputs from user qualifies for two point conversion
         if (currentSituation.down == 0 && currentSituation.toGo == 0 && (currentSituation.yardLine == 98 || currentSituation.yardLine == 99)) {
             currentSituation.isTwoPointConversion = true;
         }
@@ -128,6 +142,7 @@ int main() {
 
         cout << "Analyzing over 485,000 plays from 2013-2023...\n";
 
+        //depending on chosen data structure, will suggest plays differently
         if (dataStructure == "1") {
             //for maxHeap structure
             PlayMaxHeap::suggestPlayFromHeap(currentSituation, maxHeap);
@@ -135,7 +150,6 @@ int main() {
         else {
             //for hash table
         }
-
     }
     cout << "Exiting program.\n";
 

@@ -1,6 +1,8 @@
 #include "Play.h"
 #include "ComparePlay.h"
+
 //borrowed logic from Discussion 6 - Heaps & Priority Queues (slide 74)
+//will effectively construct heap based on weightage of favorable outcomes
 bool ComparePlay::operator()(const Play& play1, const Play& play2) {
     //calculates favorable outcomes by calculating weights for relevant attributes
     //first downs get 10 points, yards range from -99^0.75 to 99^0.75 points, touchdowns get 10, interceptions get -100,

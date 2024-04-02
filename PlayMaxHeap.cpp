@@ -11,9 +11,10 @@
 
 using namespace std;
 
-//read data from file and put into heap
+//read data from file and put into maxHeap
 void PlayMaxHeap::readDataAndPushIntoHeap(const string& filename, priority_queue<Play, vector<Play>, ComparePlay>& maxHeap) {
     ifstream file(filename);
+
     if (!file.is_open()) {
         cerr << "Could not open file: " << filename << endl;
         return;
@@ -22,6 +23,7 @@ void PlayMaxHeap::readDataAndPushIntoHeap(const string& filename, priority_queue
     string line;
     getline(file, line);
     int i = 0;
+
     while (getline(file, line)) {
         stringstream ss(line);
         string token;
@@ -100,9 +102,9 @@ void PlayMaxHeap::readDataAndPushIntoHeap(const string& filename, priority_queue
             play.rushDirection = token;
             i++;
         }
+        //helps for debugging file
         catch (exception& err) {
             cout << "Error: " << err.what() << " at line " << i << endl;
-
         }
 
         //put into maxHeap
@@ -126,7 +128,7 @@ void PlayMaxHeap::suggestPlayFromHeap(const Play& currentSituation, priority_que
     int yardLineLowerBound;
     int yardLineUpperBound;
 
-    //handles if it is determining a 2 point conversion
+    //handles if it is not determining a 2 point conversion
     if (currentSituation.down != 0) {
         //bounds for toGo have 1 yard leeway
         toGoLowerBound = Helpers::calculateToGoBounds(currentSituation.toGo)[0];
@@ -136,6 +138,7 @@ void PlayMaxHeap::suggestPlayFromHeap(const Play& currentSituation, priority_que
         yardLineLowerBound = Helpers::calculateYardLineBounds(currentSituation.yardLine)[0];
         yardLineUpperBound = Helpers::calculateYardLineBounds(currentSituation.yardLine)[1];
     }
+    //if it is determining a 2 point conversion
     else {
         toGoLowerBound = 0;
         toGoUpperBound = 0;
@@ -143,7 +146,7 @@ void PlayMaxHeap::suggestPlayFromHeap(const Play& currentSituation, priority_que
         yardLineUpperBound = 99;
     }
 
-    //bounds for time have 1:30 leeway
+    //bounds for time always have 1:30 leeway
     int timeLowerBound = Helpers::calculateTimeBounds(currentSituation.minutes, currentSituation.seconds)[0];
     int timeUpperBound = Helpers::calculateTimeBounds(currentSituation.minutes, currentSituation.seconds)[1];
 
@@ -158,6 +161,7 @@ void PlayMaxHeap::suggestPlayFromHeap(const Play& currentSituation, priority_que
     int touchdownRushes = 0;
     int twoPointPasses = 0;
     int twoPointRushes = 0;
+
     //map<playType, map<subPlayType, numOfSuccesses>>
     map<string, map<string,int>> playTypeSuccessMap = {};
 
@@ -166,28 +170,35 @@ void PlayMaxHeap::suggestPlayFromHeap(const Play& currentSituation, priority_que
 
         modifiableHeap.pop();
 
-        if (currentPlay.down == currentSituation.down && currentPlay.toGo >= toGoLowerBound
-            && currentPlay.toGo <= toGoUpperBound && currentPlay.yardLine >= yardLineLowerBound
-            && currentPlay.yardLine <= yardLineUpperBound
-            && currentPlay.timeAsInt >= timeLowerBound
-            && currentPlay.timeAsInt <= timeUpperBound) {
+        //checks if quarter and down are same, toGo is within 1 yard inclusive
+        //yardLine is within 5 yards inclusive, and time is within 1:30 inclusive
+        //then adds current iteration of play into tempHeap if all are true
+        if (currentPlay.quarter == currentSituation.quarter && currentPlay.down == currentSituation.down
+            && currentPlay.toGo >= toGoLowerBound && currentPlay.toGo <= toGoUpperBound
+            && currentPlay.yardLine >= yardLineLowerBound && currentPlay.yardLine <= yardLineUpperBound
+            && currentPlay.timeAsInt >= timeLowerBound && currentPlay.timeAsInt <= timeUpperBound) {
 
             tempHeap.push(currentPlay);
+
+            //if it's determining a two point conversion
             if (currentSituation.isTwoPointConversion && currentPlay.isTwoPointConversion && currentPlay.playType != "EXTRA POINT") {
 
                 //calculating likelihood of successful conversion in situation
                 if (currentPlay.isTwoPointConversionSuccessful) {
                     conversions++;
                     //from https://stackoverflow.com/questions/2340281/check-if-a-string-contains-a-string-in-c
+                    //uses this because .csv doesn't specify if pass or rush directly if it's a conversion
                     if (currentPlay.description.find("PASS") != string::npos) {
                         twoPointPasses++;
-                        playTypeSuccessMap[currentPlay.playType]["PASS"]++; //for specific formation
-                    } else if (currentPlay.description.find("RUSH") != string::npos) {
+                        playTypeSuccessMap[currentPlay.playType]["PASS"]++;  //for specific formation
+                    }
+                    else if (currentPlay.description.find("RUSH") != string::npos) {
                         twoPointRushes++;
-                        playTypeSuccessMap[currentPlay.playType]["RUSH"]++; //for specific formation
+                        playTypeSuccessMap[currentPlay.playType]["RUSH"]++;  //for specific formation
                     }
                 }
             }
+            //if it's not determining a two point conversion
             else {
                 if (currentSituation.isTwoPointConversion && currentPlay.playType == "PASS") {
                     cout << currentPlay.playType << ": " << currentPlay.description << endl;
@@ -198,11 +209,11 @@ void PlayMaxHeap::suggestPlayFromHeap(const Play& currentSituation, priority_que
                     firstDowns++;
                     if (currentPlay.isPass) {
                         firstDownPasses++;
-                        playTypeSuccessMap[currentPlay.playType][currentPlay.passType]++; //for specific pass type
+                        playTypeSuccessMap[currentPlay.playType][currentPlay.passType]++;  //for specific pass type
                     }
                     else if (currentPlay.isRush) {
                         firstDownRushes++;
-                        playTypeSuccessMap[currentPlay.playType][currentPlay.rushDirection]++; //for specific rush dir
+                        playTypeSuccessMap[currentPlay.playType][currentPlay.rushDirection]++;  //for specific rush dir
                     }
                 }
 
@@ -211,16 +222,17 @@ void PlayMaxHeap::suggestPlayFromHeap(const Play& currentSituation, priority_que
                     touchdowns++;
                     if (currentPlay.isPass) {
                         touchdownPasses++;
-                        playTypeSuccessMap[currentPlay.playType][currentPlay.passType]++; //for specific pass type
+                        playTypeSuccessMap[currentPlay.playType][currentPlay.passType]++;  //for specific pass type
                     } else if (currentPlay.isRush) {
                         touchdownRushes++;
-                        playTypeSuccessMap[currentPlay.playType][currentPlay.rushDirection]++; //for specific rush dir
+                        playTypeSuccessMap[currentPlay.playType][currentPlay.rushDirection]++;  //for specific rush dir
                     }
                 }
 
                 //calculating likelihood of successful field goal in situation
                 if (currentPlay.playType == "FIELD GOAL") {
                     //from https://stackoverflow.com/questions/2340281/check-if-a-string-contains-a-string-in-c
+                    //uses this because .csv file doesn't directly specify if field goal is good or not
                     if (currentPlay.description.find("IS GOOD") != string::npos) {
                         fieldGoals++;
                         playTypeSuccessMap[currentPlay.playType][currentPlay.formation]++; //for specific formation
@@ -230,57 +242,79 @@ void PlayMaxHeap::suggestPlayFromHeap(const Play& currentSituation, priority_que
         }
     }
 
+    //if there are no similar situations within bounds given
     if (tempHeap.empty()) {
         cout << "No Match Found! Good Luck!\n\n";
         return;
     }
 
+    //the best play is at the top of the max Heap depending on rating given by ComparePlay
     bestPlay = tempHeap.top();
 
     map<string, float> likelihoods;
-    multimap<float, string, greater<float>> sortedLikelihoods;
 
+    //likelihoods for first downs
     float likelihoodFirstDown = (static_cast<float>(firstDowns)/static_cast<float>(tempHeap.size()))*100;
+    //puts likelihood of first down into map that's unsorted by likelihood
     likelihoods["First Down: "] = likelihoodFirstDown;
     float likelihoodFirstDownPass = 0;
     float likelihoodFirstDownRush = 0;
+    //so that it doesn't divide by 0
     if (firstDowns != 0) {
         likelihoodFirstDownPass = (static_cast<float>(firstDownPasses)/static_cast<float>(firstDowns))*100;
         likelihoodFirstDownRush = (static_cast<float>(firstDownRushes)/static_cast<float>(firstDowns))*100;
     }
 
+    //likelihoods for touchdowns
     float likelihoodTouchdown = (static_cast<float>(touchdowns)/static_cast<float>(tempHeap.size()))*100;
+    //puts likelihood of touchdown into map that's unsorted by likelihood
     likelihoods["Touchdown: "] = likelihoodTouchdown;
     float likelihoodTouchdownPass = 0;
     float likelihoodTouchdownRush = 0;
+    //so that it doesn't divide by 0
     if (touchdowns != 0) {
         likelihoodTouchdownPass = (static_cast<float>(touchdownPasses)/static_cast<float>(touchdowns))*100;
         likelihoodTouchdownRush = (static_cast<float>(touchdownRushes)/static_cast<float>(touchdowns))*100;
     }
 
+    //likelihoods for conversions
     float likelihoodTwoPoint = (static_cast<float>(conversions)/static_cast<float>(tempHeap.size()))*100;
+    //likelihood of conversion not into map because if calculating for conversion, will be the only one printed
+    //...so it will not need to be sorted
     float likelihoodTwoPointPass = 0;
     float likelihoodTwoPointRush = 0;
+    //so that it doesn't divide by 0
     if (conversions != 0) {
         likelihoodTwoPointPass = (static_cast<float>(twoPointPasses)/static_cast<float>(conversions))*100;
         likelihoodTwoPointRush = (static_cast<float>(twoPointRushes)/static_cast<float>(conversions))*100;
     }
 
+    //likelihood for field goals
     float likelihoodFieldGoal = 0.0f;
+    //so that it doesn't divide by 0
     if (fieldGoals != 0) {
         likelihoodFieldGoal = (static_cast<float>(fieldGoals)/static_cast<float>(tempHeap.size()))*100;
     }
+    //puts likelihood of field goal into map that's unsorted by likelihood
     likelihoods["Field Goal: "] = likelihoodFieldGoal;
 
+
+    //logic for multimap inspired by https://www.educative.io/answers/how-to-sort-a-map-by-value-in-cpp
+    //is so that the likelihoods map can be sorted by value
+    //logic of descending sorted map from https://www.geeksforgeeks.org/descending-order-map-multimap-c-stl/
+    multimap<float, string, greater<float>> sortedLikelihoods;
+    //will sort the likelihoods map by the key's value
     for (auto iter = likelihoods.begin(); iter != likelihoods.end(); iter++) {
         sortedLikelihoods.insert({iter->second, iter->first});
     }
 
     int mostSuccesses = -1;
     //map<amtOfSuccess, map<playType, subPlayType>>
-    //logic from https://www.geeksforgeeks.org/descending-order-map-multimap-c-stl/
+    //logic of descending sorted map from https://www.geeksforgeeks.org/descending-order-map-multimap-c-stl/
     map<int, pair<string, string>, greater<int>> successfulPlayMap = {};
 
+    //puts successful play(s) into separate map
+    //keeps 1 if it has the most successes and keeps multiple if successes are the same for 2 different plays
     for (auto iter = playTypeSuccessMap.begin(); iter != playTypeSuccessMap.end(); iter++) {
         for (auto iter2 = iter->second.begin(); iter2 != iter->second.end(); iter2++) {
             if (iter2->second > mostSuccesses) {
@@ -289,6 +323,7 @@ void PlayMaxHeap::suggestPlayFromHeap(const Play& currentSituation, priority_que
             }
         }
     }
+
     cout << "\nOUT OF " << tempHeap.size() << " SIMILAR SITUATIONS, ";
     cout << "THE IDEAL PLAY(S)' LIKELIHOODS ARE:\n";
 
@@ -305,6 +340,8 @@ void PlayMaxHeap::suggestPlayFromHeap(const Play& currentSituation, priority_que
     }
 
     cout << "\nLIKELIHOODS:\n";
+
+    //only prints 2 pt conversion if the inputted situation prompted for 2 pt conversion likelihood
     if (currentSituation.isTwoPointConversion) {
         cout << "    Two Point Conversion: " << Helpers::formatPercentages(likelihoodTwoPoint) << "%\n";
         cout << "        Two Point Pass: " << Helpers::formatPercentages(likelihoodTwoPointPass) << "%\n";
@@ -339,6 +376,7 @@ void PlayMaxHeap::suggestPlayFromHeap(const Play& currentSituation, priority_que
     }
     cout << " with a(n) " << bestPlay.formation << " formation\n";
 
+    //formatted output in paragraph form prints
     cout << "    On " << bestPlay.gameDate << " " << bestPlay.offense;
     if (bestPlay.isTwoPointConversion && bestPlay.isTwoPointConversionSuccessful) {
         cout << " scored 2 points ";
@@ -379,5 +417,4 @@ void PlayMaxHeap::suggestPlayFromHeap(const Play& currentSituation, priority_que
     cout << "\nDescription: " << bestPlay.description << endl;
     cout << "Game ID: " << bestPlay.gameID << endl << endl;
     cout << "\n============================================= Welcome back to the Gridiron Guru! ============================================\n";
-
 }

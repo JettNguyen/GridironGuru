@@ -19,7 +19,7 @@ bool Helpers::validateInput(const string& input, const string& inputType, int lo
         }
         catch (exception& err) {
             //should catch if input is not an integer
-            cout << "Error: err.what()\n";
+            cout << "Error: "<< err.what() << endl;
             return false;
         }
     }
@@ -35,7 +35,7 @@ bool Helpers::validateInput(const string& input, const string& inputType, int lo
         try {
             stoi(to_string(input[0]));
             stoi(to_string(input[1]));
-            //checks if minutes are greater than 15 mins
+            //checks if minutes are greater than 15 minutess
             if (stoi(to_string(input[0]-'0') + to_string(input[1]-'0')) > 15) {
                 cout << "Error: Time format is invalid! Minutes exceed 15!\n";
                 return false;
@@ -48,7 +48,7 @@ bool Helpers::validateInput(const string& input, const string& inputType, int lo
 
             stoi(to_string(input[3]));
             stoi(to_string(input[4]));
-            //checks if seconds are greater than 59 secs
+            //checks if seconds are greater than 59 seconds
             if (stoi(to_string(input[3]-'0') + to_string(input[4]-'0')) > 59) {
                 cout << "Error: Time format is invalid! Seconds exceed 59!\n";
                 return false;
