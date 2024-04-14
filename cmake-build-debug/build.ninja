@@ -49,41 +49,41 @@ cmake_ninja_workdir = /Users/Games/Library/CloudStorage/OneDrive-UniversityofFlo
 
 build cmake_object_order_depends_target_Project3: phony || CMakeFiles/Project3.dir
 
-build CMakeFiles/Project3.dir/main.cpp.o: CXX_COMPILER__Project3_unscanned_Debug /Users/Games/Library/CloudStorage/OneDrive-UniversityofFlorida/2024/Spring/COP3530/Project3/main.cpp || cmake_object_order_depends_target_Project3
-  DEP_FILE = CMakeFiles/Project3.dir/main.cpp.o.d
+build CMakeFiles/Project3.dir/src/main.cpp.o: CXX_COMPILER__Project3_unscanned_Debug /Users/Games/Library/CloudStorage/OneDrive-UniversityofFlorida/2024/Spring/COP3530/Project3/src/main.cpp || cmake_object_order_depends_target_Project3
+  DEP_FILE = CMakeFiles/Project3.dir/src/main.cpp.o.d
   FLAGS = -g -std=gnu++17 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk -mmacosx-version-min=12.7 -fcolor-diagnostics
   OBJECT_DIR = CMakeFiles/Project3.dir
-  OBJECT_FILE_DIR = CMakeFiles/Project3.dir
+  OBJECT_FILE_DIR = CMakeFiles/Project3.dir/src
 
-build CMakeFiles/Project3.dir/Play.cpp.o: CXX_COMPILER__Project3_unscanned_Debug /Users/Games/Library/CloudStorage/OneDrive-UniversityofFlorida/2024/Spring/COP3530/Project3/Play.cpp || cmake_object_order_depends_target_Project3
-  DEP_FILE = CMakeFiles/Project3.dir/Play.cpp.o.d
+build CMakeFiles/Project3.dir/src/Play.cpp.o: CXX_COMPILER__Project3_unscanned_Debug /Users/Games/Library/CloudStorage/OneDrive-UniversityofFlorida/2024/Spring/COP3530/Project3/src/Play.cpp || cmake_object_order_depends_target_Project3
+  DEP_FILE = CMakeFiles/Project3.dir/src/Play.cpp.o.d
   FLAGS = -g -std=gnu++17 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk -mmacosx-version-min=12.7 -fcolor-diagnostics
   OBJECT_DIR = CMakeFiles/Project3.dir
-  OBJECT_FILE_DIR = CMakeFiles/Project3.dir
+  OBJECT_FILE_DIR = CMakeFiles/Project3.dir/src
 
-build CMakeFiles/Project3.dir/ComparePlay.cpp.o: CXX_COMPILER__Project3_unscanned_Debug /Users/Games/Library/CloudStorage/OneDrive-UniversityofFlorida/2024/Spring/COP3530/Project3/ComparePlay.cpp || cmake_object_order_depends_target_Project3
-  DEP_FILE = CMakeFiles/Project3.dir/ComparePlay.cpp.o.d
+build CMakeFiles/Project3.dir/src/ComparePlay.cpp.o: CXX_COMPILER__Project3_unscanned_Debug /Users/Games/Library/CloudStorage/OneDrive-UniversityofFlorida/2024/Spring/COP3530/Project3/src/ComparePlay.cpp || cmake_object_order_depends_target_Project3
+  DEP_FILE = CMakeFiles/Project3.dir/src/ComparePlay.cpp.o.d
   FLAGS = -g -std=gnu++17 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk -mmacosx-version-min=12.7 -fcolor-diagnostics
   OBJECT_DIR = CMakeFiles/Project3.dir
-  OBJECT_FILE_DIR = CMakeFiles/Project3.dir
+  OBJECT_FILE_DIR = CMakeFiles/Project3.dir/src
 
-build CMakeFiles/Project3.dir/PlayMaxHeap.cpp.o: CXX_COMPILER__Project3_unscanned_Debug /Users/Games/Library/CloudStorage/OneDrive-UniversityofFlorida/2024/Spring/COP3530/Project3/PlayMaxHeap.cpp || cmake_object_order_depends_target_Project3
-  DEP_FILE = CMakeFiles/Project3.dir/PlayMaxHeap.cpp.o.d
+build CMakeFiles/Project3.dir/src/PlayMaxHeap.cpp.o: CXX_COMPILER__Project3_unscanned_Debug /Users/Games/Library/CloudStorage/OneDrive-UniversityofFlorida/2024/Spring/COP3530/Project3/src/PlayMaxHeap.cpp || cmake_object_order_depends_target_Project3
+  DEP_FILE = CMakeFiles/Project3.dir/src/PlayMaxHeap.cpp.o.d
   FLAGS = -g -std=gnu++17 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk -mmacosx-version-min=12.7 -fcolor-diagnostics
   OBJECT_DIR = CMakeFiles/Project3.dir
-  OBJECT_FILE_DIR = CMakeFiles/Project3.dir
+  OBJECT_FILE_DIR = CMakeFiles/Project3.dir/src
 
-build CMakeFiles/Project3.dir/Helpers.cpp.o: CXX_COMPILER__Project3_unscanned_Debug /Users/Games/Library/CloudStorage/OneDrive-UniversityofFlorida/2024/Spring/COP3530/Project3/Helpers.cpp || cmake_object_order_depends_target_Project3
-  DEP_FILE = CMakeFiles/Project3.dir/Helpers.cpp.o.d
+build CMakeFiles/Project3.dir/src/Helpers.cpp.o: CXX_COMPILER__Project3_unscanned_Debug /Users/Games/Library/CloudStorage/OneDrive-UniversityofFlorida/2024/Spring/COP3530/Project3/src/Helpers.cpp || cmake_object_order_depends_target_Project3
+  DEP_FILE = CMakeFiles/Project3.dir/src/Helpers.cpp.o.d
   FLAGS = -g -std=gnu++17 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk -mmacosx-version-min=12.7 -fcolor-diagnostics
   OBJECT_DIR = CMakeFiles/Project3.dir
-  OBJECT_FILE_DIR = CMakeFiles/Project3.dir
+  OBJECT_FILE_DIR = CMakeFiles/Project3.dir/src
 
-build CMakeFiles/Project3.dir/PlayHashTable.cpp.o: CXX_COMPILER__Project3_unscanned_Debug /Users/Games/Library/CloudStorage/OneDrive-UniversityofFlorida/2024/Spring/COP3530/Project3/PlayHashTable.cpp || cmake_object_order_depends_target_Project3
-  DEP_FILE = CMakeFiles/Project3.dir/PlayHashTable.cpp.o.d
+build CMakeFiles/Project3.dir/src/PlayHashTable.cpp.o: CXX_COMPILER__Project3_unscanned_Debug /Users/Games/Library/CloudStorage/OneDrive-UniversityofFlorida/2024/Spring/COP3530/Project3/src/PlayHashTable.cpp || cmake_object_order_depends_target_Project3
+  DEP_FILE = CMakeFiles/Project3.dir/src/PlayHashTable.cpp.o.d
   FLAGS = -g -std=gnu++17 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk -mmacosx-version-min=12.7 -fcolor-diagnostics
   OBJECT_DIR = CMakeFiles/Project3.dir
-  OBJECT_FILE_DIR = CMakeFiles/Project3.dir
+  OBJECT_FILE_DIR = CMakeFiles/Project3.dir/src
 
 
 # =============================================================================
@@ -93,7 +93,7 @@ build CMakeFiles/Project3.dir/PlayHashTable.cpp.o: CXX_COMPILER__Project3_unscan
 #############################################
 # Link the executable Project3
 
-build Project3: CXX_EXECUTABLE_LINKER__Project3_Debug CMakeFiles/Project3.dir/main.cpp.o CMakeFiles/Project3.dir/Play.cpp.o CMakeFiles/Project3.dir/ComparePlay.cpp.o CMakeFiles/Project3.dir/PlayMaxHeap.cpp.o CMakeFiles/Project3.dir/Helpers.cpp.o CMakeFiles/Project3.dir/PlayHashTable.cpp.o
+build Project3: CXX_EXECUTABLE_LINKER__Project3_Debug CMakeFiles/Project3.dir/src/main.cpp.o CMakeFiles/Project3.dir/src/Play.cpp.o CMakeFiles/Project3.dir/src/ComparePlay.cpp.o CMakeFiles/Project3.dir/src/PlayMaxHeap.cpp.o CMakeFiles/Project3.dir/src/Helpers.cpp.o CMakeFiles/Project3.dir/src/PlayHashTable.cpp.o
   FLAGS = -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk -mmacosx-version-min=12.7
   OBJECT_DIR = CMakeFiles/Project3.dir
   POST_BUILD = :
