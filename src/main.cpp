@@ -6,18 +6,19 @@
 #include "ComparePlay.h"
 #include "PlayMaxHeap.h"
 #include "Helpers.h"
+#include "NodePlay.h"
 
 using namespace std;
 
 
 int main() {
-    const string filename = "files/pbp2013-2023.csv";
+    const string filename = "../files/pbp2013-2023.csv";
 
     //for maxHeap
     priority_queue<Play, vector<Play>, ComparePlay> maxHeap;
 
     //for hash table
-
+    pair<NodePlay, NodePlay> HashArray[7500]; //this number is subject to change
 
     //welcome screen
     cout << "\n============================================= Welcome to the Gridiron Guru! =============================================\n";
