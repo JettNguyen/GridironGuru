@@ -9,10 +9,11 @@
 #include "Play.h"
 
 class NodePlay {
-private:
+public:
+//private:
     Play* thisPlay;
     NodePlay* nextPlay;
-public:
+//public:
     NodePlay();
     NodePlay(Play* thisPlay);
 };
