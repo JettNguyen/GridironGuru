@@ -4,12 +4,22 @@
 
 #include "NodePlay.h"
 
-NodePlay::NodePlay(Play* thisPlay) {
-    this->thisPlay = thisPlay;
-    this->nextPlay = nullptr;
-}
-
 NodePlay::NodePlay() {
     this->thisPlay = nullptr;
     this->nextPlay = nullptr;
+}
+
+void NodePlay::setPlay(Play *thisPlay) {
+    this->thisPlay = thisPlay;
+}
+
+void NodePlay::setNext(NodePlay *nextPlay) {
+    this->nextPlay = nextPlay;
+}
+
+bool NodePlay::isNullPlayPtr() {
+    if(this->thisPlay == nullptr){
+        return true;
+    }
+    return false;
 }

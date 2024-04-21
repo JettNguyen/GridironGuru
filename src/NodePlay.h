@@ -9,13 +9,14 @@
 #include "Play.h"
 
 class NodePlay {
-public:
-//private:
+private:
     Play* thisPlay;
     NodePlay* nextPlay;
-//public:
+public:
     NodePlay();
-    NodePlay(Play* thisPlay);
+    void setPlay(Play* thisPlay);
+    void setNext(NodePlay* nextPlay);
+    bool isNullPlayPtr();
 };
 
 

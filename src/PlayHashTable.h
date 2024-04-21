@@ -6,5 +6,5 @@
 class PlayHashTable {
 public:
     //read data from file and put into heap
-    static void readDataAndPushIntoHashMap(const string& filename, pair<NodePlay, NodePlay> *HashArray);
+    static void readDataAndPushIntoHashMap(const string& filename, pair<NodePlay, NodePlay> *hashArray);
 };

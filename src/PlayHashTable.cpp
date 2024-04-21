@@ -5,7 +5,7 @@
 #include "Helpers.h"
 #include "PlayHashTable.h"
 
-void PlayHashTable::readDataAndPushIntoHashMap(const string &filename, pair<NodePlay, NodePlay> *HashArray) {
+void PlayHashTable::readDataAndPushIntoHashMap(const string &filename, pair<NodePlay, NodePlay> *hashArray) {
     ifstream file(filename);
 
     if (!file.is_open()) {
@@ -100,15 +100,107 @@ void PlayHashTable::readDataAndPushIntoHashMap(const string &filename, pair<Node
             cout << "Error: " << err.what() << " at line " << i << endl;
         }
 
-        // create NodePlay object
-        NodePlay nodePlay(&play);
+        NodePlay nodePlay;
+
+        // create NodePlay object only if it is a play type we are considering
+        if(play.down >= 1 && (play.playType == "SCRAMBLE" || play.playType == "PASS" || play.playType == "RUSH" || play.playType == "SACK")){
+            nodePlay.setPlay(&play);
+        }
+        else if (play.down == 0 && play.isTwoPointConversion){
+            nodePlay.setPlay(&play);
+        }
+        else{
+            continue;
+        }
 
         //get variables for hashing
 
-        //impliment the hash function
+        //same code used to create a hash value for each play object
+        //is to be used to get a hash value for the data input by the user
 
-        //put into HashMap
+        int downRep; //represents the down of the play
+        int toGoRep; //represents the yards to go of the play
+        int posRep; //represents the position of the play
+        int timeRep; //represents the time in the game of the play
+
+
+        //calculating rep values for non-two point conversion plays
+        if(play.down >= 1) {
+
+            //determining the downRep
+            downRep = play.down - 1;
+            // start at index 0 for first down, 1 for second down and so on
+
+            //determining the toGoRep
+            if (play.toGo == 1) {
+                toGoRep = 0;
+            } else if (play.toGo == 2 || play.toGo == 3) {
+                toGoRep = 1;
+            } else if (play.toGo >= 4 && play.toGo <= 6) {
+                toGoRep = 2;
+            } else if (play.toGo >= 7 && play.toGo <= 10) {
+                toGoRep = 3;
+            } else if (play.toGo >= 11 && play.toGo <= 16) {
+                toGoRep = 4;
+            } else if (play.toGo >= 17) {
+                toGoRep = 5;
+            }
+
+            //determining the posRep
+            posRep = play.yardLine / 10;
+
+            //determining the timeRep
+            int secondsLeft = play.minutes * 60 + play.seconds;
+            if (play.quarter == 1 || play.quarter == 3 || (play.quarter == 2 && secondsLeft > 300) ||
+                (play.quarter == 4 && secondsLeft > 600)) {
+                timeRep = 0;
+                //we decided that time is not a relevant factor in determining the situation besides when time is under five minutes in
+                //the second quarter, and under 10 minutes in the
+            }
+            if (play.quarter == 2 && secondsLeft <= 300) {
+                timeRep = 1 + (secondsLeft - 1) / 30;
+            }
+            if (play.quarter == 4 && secondsLeft <= 600) {
+                timeRep = 11 + (secondsLeft - 1) / 30;
+            }
+        }
+
+        if(i==405527){
+            cout << "yipee" << endl;
+        }
+
+        int hashVal;
+
+        if(play.down != 0){
+            hashVal = downRep * 1860 + toGoRep * 310 + posRep * 31 + timeRep * 1;
+//            if (hashVal == 3348){
+//                cout << "yipee" << endl;
+//            }
+        }
+        else{
+            hashVal = 7440;
+            //if yardLine == 99, hashVal doesn't change
+            if(play.yardLine == 98){
+                hashVal += 1;
+            }
+            else if(play.yardLine <= 97 && play.yardLine >= 90){
+                hashVal +=2;
+            }
+            else if(play.yardLine <= 89){
+                hashVal += 3;
+            }
+        }
+        //hashVal now calculated
+
+        //put nodes into the HashMap
+        if(hashArray[hashVal].first.isNullPlayPtr()){
+            hashArray[hashVal].first = nodePlay;
+            hashArray[hashVal].second = nodePlay;
+        }
+        else{
+            hashArray[hashVal].second.setNext(&nodePlay);
+            hashArray[hashVal].second = nodePlay;
+        }
     }
     file.close();
-
 }

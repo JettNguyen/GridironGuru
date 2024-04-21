@@ -5,6 +5,7 @@
 #include "Play.h"
 #include "ComparePlay.h"
 #include "PlayMaxHeap.h"
+#include "PlayHashTable.h"
 #include "Helpers.h"
 #include "NodePlay.h"
 
@@ -18,7 +19,7 @@ int main() {
     priority_queue<Play, vector<Play>, ComparePlay> maxHeap;
 
     //for hash table
-    pair<NodePlay, NodePlay> HashArray[7500]; //this number is subject to change
+    pair<NodePlay, NodePlay> hashArray[7444]; //this number is subject to change
 
     //welcome screen
     cout << "\n============================================= Welcome to the Gridiron Guru! =============================================\n";
@@ -61,10 +62,7 @@ int main() {
             cout << "Building Hash Table...\n";
             //so that the hash table is not built again during the run
             hashTableUsed = true;
-            /*
-            //for hash table
-
-            */
+            PlayHashTable::readDataAndPushIntoHashMap(filename, hashArray);
         }
 
         //prompt current qtr
