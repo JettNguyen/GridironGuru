@@ -17,6 +17,7 @@ public:
     void setPlay(Play* thisPlay);
     void setNext(NodePlay* nextPlay);
     bool isNullPlayPtr();
+    bool isNullNextPtr();
 };
 
 

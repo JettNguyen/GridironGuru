@@ -164,11 +164,6 @@ void PlayHashTable::readDataAndPushIntoHashMap(const string &filename, pair<Node
                 timeRep = 11 + (secondsLeft - 1) / 30;
             }
         }
-
-        if(i==405527){
-            cout << "yipee" << endl;
-        }
-
         int hashVal;
 
         if(play.down != 0){
@@ -190,6 +185,9 @@ void PlayHashTable::readDataAndPushIntoHashMap(const string &filename, pair<Node
                 hashVal += 3;
             }
         }
+        hashVal %= 24;
+        //take this out after
+
         //hashVal now calculated
 
         //put nodes into the HashMap

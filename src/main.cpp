@@ -19,7 +19,7 @@ int main() {
     priority_queue<Play, vector<Play>, ComparePlay> maxHeap;
 
     //for hash table
-    pair<NodePlay, NodePlay> hashArray[7444]; //this number is subject to change
+    pair<NodePlay, NodePlay> hashArray[24]; //this number is subject to change, usually should be 7444
 
     //welcome screen
     cout << "\n============================================= Welcome to the Gridiron Guru! =============================================\n";
