@@ -1,4 +1,4 @@
-# Install script for directory: C:/Users/zacho/OneDrive - University of Florida/Desktop/Spring 24/DSA/GridironGuru
+# Install script for directory: C:/Documents/Data Structures+Algorithms Spring 2024/Project 3 GridironGuru
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -34,7 +34,7 @@ endif()
 
 # Set default install directory permissions.
 if(NOT DEFINED CMAKE_OBJDUMP)
-  set(CMAKE_OBJDUMP "C:/mingw64/bin/objdump.exe")
+  set(CMAKE_OBJDUMP "C:/Users/wshao/AppData/Local/Programs/CLion/bin/mingw/bin/objdump.exe")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "C:/Users/zacho/OneDrive - University of Florida/Desktop/Spring 24/DSA/GridironGuru/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "C:/Documents/Data Structures+Algorithms Spring 2024/Project 3 GridironGuru/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
