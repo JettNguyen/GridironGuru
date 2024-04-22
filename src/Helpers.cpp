@@ -228,3 +228,55 @@ string Helpers::formatTime(int minute, int second) {
 
     return timeString;
 }
+
+string Helpers::generatePlayCode(Play &play) {
+    string playCode;
+    // quarter
+    // digits 1-4
+    playCode += to_string(play.quarter);
+    // down
+    // digits 0-4
+    playCode += to_string(play.down);
+
+    // yards to go
+    // digits 0-4 based on ranges of
+    // 0: 1-3; 1: 4-7; 2: 8-13; 3: 14-20; 4: >=21
+    int yds2go = play.toGo;
+    if(yds2go>=1 && yds2go<=3)
+        playCode += "0";
+
+    else if(yds2go>=4 && yds2go<=7)
+        playCode += "1";
+
+    else if(yds2go>=8 && yds2go<=13)
+        playCode += "2";
+
+    else if(yds2go>=14 && yds2go<=20)
+        playCode += "3";
+
+    else if(yds2go>=21)
+        playCode += "4";
+
+
+    // yard line
+    // digits 0-9 (decimal is truncated when / 10)
+    playCode += to_string(play.yardLine / 10);
+
+    // time
+    // digits 0-3 based on ranges of
+    // 0: 15:00-7:31; 1: 7:30-4:31; 2: 4:30-2:01; 3: <=2:00
+    int timeInSeconds = play.minutes*60 + play.seconds;
+    if(timeInSeconds<=900 && timeInSeconds>=451)
+        playCode += "0";
+
+    else if(timeInSeconds<=450 && timeInSeconds>=271)
+        playCode += "1";
+
+    else if(timeInSeconds<=270 && timeInSeconds>=121)
+        playCode += "2";
+
+    else if(timeInSeconds<=120)
+        playCode += "3";
+
+    return playCode;
+}

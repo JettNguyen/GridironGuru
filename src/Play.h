@@ -5,6 +5,7 @@ using namespace std;
 
 //represents a play
 struct Play {
+    Play* next;
     int gameID;
     string gameDate;
     int quarter;
@@ -39,6 +40,9 @@ struct Play {
     float twoPointWeight;
     string rushDirection;
 
+
 public:
     Play();
+
+    bool operator==(const Play& comparedPlay);
 };

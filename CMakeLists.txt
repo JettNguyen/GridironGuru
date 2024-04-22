@@ -14,5 +14,5 @@ add_executable(Project3 src/main.cpp
         src/Helpers.cpp
         src/PlayHashTable.cpp
         src/PlayHashTable.h
-        src/NodePlay.h
-        src/NodePlay.cpp)
+        src/LinkedList.h
+        src/LinkedList.cpp)

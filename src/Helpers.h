@@ -1,4 +1,6 @@
+#pragma once
 #include <vector>
+#include "Play.h"
 
 using namespace std;
 
@@ -21,5 +23,7 @@ public:
     static string formatPercentages(float percentage);
 
     static string formatTime(int minute, int second);
+
+    static string generatePlayCode(Play& play);
 
 };

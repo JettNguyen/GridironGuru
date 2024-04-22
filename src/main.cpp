@@ -2,23 +2,25 @@
 #include <vector>
 #include <queue>
 
+
 #include "Play.h"
 #include "ComparePlay.h"
 #include "PlayMaxHeap.h"
+#include "PlayHashTable.h"
 #include "Helpers.h"
-#include "NodePlay.h"
 
 using namespace std;
 
 
 int main() {
-    const string filename = "../files/pbp2013-2023.csv";
+    string filename;
 
     //for maxHeap
     priority_queue<Play, vector<Play>, ComparePlay> maxHeap;
 
-    //for hash table
-    pair<NodePlay, NodePlay> HashArray[7500]; //this number is subject to change
+    //hash map
+    //keys are play code strings, values are Linked Lists of Plays
+    unordered_map<string, LinkedList> hashMap;
 
     //welcome screen
     cout << "\n============================================= Welcome to the Gridiron Guru! =============================================\n";
@@ -52,19 +54,20 @@ int main() {
 
         if (dataStructure == "1" && !heapUsed) {
             //for maxHeap
+            filename = "../files/pbp2013-2023.csv";
             cout << "Building Heap...\n";
             //so that the heap is not built again during the run
             heapUsed = true;
             PlayMaxHeap::readDataAndPushIntoHeap(filename, maxHeap);
+
         }
         else if (dataStructure == "2" && !hashTableUsed){
+            filename = "../files/pbp2013-2023-modified.csv";
             cout << "Building Hash Table...\n";
             //so that the hash table is not built again during the run
             hashTableUsed = true;
-            /*
-            //for hash table
+            PlayHashTable::readDataAndPushIntoHashMap(filename, hashMap);
 
-            */
         }
 
         //prompt current qtr
@@ -130,6 +133,21 @@ int main() {
             cout << "Input TIME LEFT in quarter in mm:ss below\n";
             cin >> input;
         }
+
+
+        if(dataStructure == "2"){
+            string playCode = Helpers::generatePlayCode(currentSituation);
+            cout << hashMap[playCode].getHead()->offense << endl;
+            cout << hashMap[playCode].getHead()->defense << endl;
+            cout << hashMap[playCode].getHead()->playType << endl;
+            cout << hashMap[playCode].getHead()->formation << endl;
+
+            continue;
+        }
+
+
+
+
         currentSituation.minutes = stoi(to_string(input[0]-'0') + to_string(input[1]-'0'));
         currentSituation.seconds = stoi(to_string(input[3]-'0') + to_string(input[4]-'0'));
         currentSituation.timeAsInt = Helpers::timeToInt(currentSituation.minutes, currentSituation.seconds);
