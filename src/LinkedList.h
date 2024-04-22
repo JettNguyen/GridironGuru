@@ -10,18 +10,13 @@
 
 class LinkedList {
 private:
-    Play* head;
-    Play* tail;
+    Play* head = nullptr;
+    Play* tail = nullptr;
 public:
-    LinkedList(Play* initialPlay = nullptr) {
-        head = initialPlay;
-        tail = initialPlay;
-    };
+    LinkedList() { };
 
     Play* getHead();
-    Play* getTail();
-    void setHead(Play* play);
-    void setTail(Play* play);
+    void setInitialPlay(Play& play);
     void insert(Play* play);
 };
 

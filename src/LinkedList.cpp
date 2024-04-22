@@ -8,22 +8,19 @@ Play* LinkedList::getHead() {
     return head;
 }
 
-Play *LinkedList::getTail() {
-    return tail;
+void LinkedList::setInitialPlay(Play& play){
+    head = &play;
+    tail = &play;
 }
 
-void LinkedList::setHead(Play* play){
-    head = play;
-}
-void LinkedList::setTail(Play* play){
-    tail = play;
-}
-
-void LinkedList::insert(Play *play) {
-
+void LinkedList::insert(Play* play) {
     if(head == nullptr){
         head = play;
+        return;
+    }
+    else if(tail == nullptr){
         tail = play;
+        head->next = tail;
         return;
     }
 

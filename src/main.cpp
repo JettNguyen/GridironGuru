@@ -20,7 +20,7 @@ int main() {
 
     //hash map
     //keys are play code strings, values are Linked Lists of Plays
-    unordered_map<string, LinkedList> hashMap;
+    vector<LinkedList> hashMap(500, LinkedList());
 
     //welcome screen
     cout << "\n============================================= Welcome to the Gridiron Guru! =============================================\n";
@@ -59,15 +59,13 @@ int main() {
             //so that the heap is not built again during the run
             heapUsed = true;
             PlayMaxHeap::readDataAndPushIntoHeap(filename, maxHeap);
-
         }
         else if (dataStructure == "2" && !hashTableUsed){
             filename = "../files/pbp2013-2023-modified.csv";
             cout << "Building Hash Table...\n";
             //so that the hash table is not built again during the run
             hashTableUsed = true;
-            PlayHashTable::readDataAndPushIntoHashMap(filename, hashMap);
-
+//            PlayHashTable::readDataAndPushIntoHashMap(filename, hashMap);
         }
 
         //prompt current qtr
@@ -133,21 +131,6 @@ int main() {
             cout << "Input TIME LEFT in quarter in mm:ss below\n";
             cin >> input;
         }
-
-
-        if(dataStructure == "2"){
-            string playCode = Helpers::generatePlayCode(currentSituation);
-            cout << hashMap[playCode].getHead()->offense << endl;
-            cout << hashMap[playCode].getHead()->defense << endl;
-            cout << hashMap[playCode].getHead()->playType << endl;
-            cout << hashMap[playCode].getHead()->formation << endl;
-
-            continue;
-        }
-
-
-
-
         currentSituation.minutes = stoi(to_string(input[0]-'0') + to_string(input[1]-'0'));
         currentSituation.seconds = stoi(to_string(input[3]-'0') + to_string(input[4]-'0'));
         currentSituation.timeAsInt = Helpers::timeToInt(currentSituation.minutes, currentSituation.seconds);
@@ -169,6 +152,7 @@ int main() {
         }
         else {
             //for hash table
+
         }
     }
     cout << "Exiting program.\n";

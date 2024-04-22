@@ -17,16 +17,16 @@ void PlayHashTable::readDataAndPushIntoHashMap(const string &filename, unordered
     getline(file, line);
     int i = 0;
 
-    while (getline(file, line)) {
+    while (getline(file, line) /*&& i<3*/) {
         stringstream ss(line);
         string token;
 
-        Play play;
+        Play* play = new Play();
         try {
             getline(ss, token, ',');  //read gameID
-            play.gameID = stoi(token);
+            play->gameID = stoi(token);
             getline(ss, token, ',');  //read gameDate
-            play.gameDate = token;
+            play->gameDate = token;
             getline(ss, token, ',');  //read playType
             // if play type is blank, a no play, or a timeout/punt/extra pt/QB kneel
             // move to next line
@@ -36,68 +36,68 @@ void PlayHashTable::readDataAndPushIntoHashMap(const string &filename, unordered
             token == "QB KNEEL"){
                 continue;
             }
-            play.playType = token;
+            play->playType = token;
             getline(ss, token, ',');  //read qtr
-            play.quarter = stoi(token);
+            play->quarter = stoi(token);
             getline(ss, token, ',');  //read minute
-            play.minutes = stoi(token);
+            play->minutes = stoi(token);
             getline(ss, token, ',');  //read second
-            play.seconds = stoi(token);
-            play.timeAsInt = Helpers::timeToInt(play.minutes, play.seconds);
+            play->seconds = stoi(token);
+            play->timeAsInt = Helpers::timeToInt(play->minutes, play->seconds);
             getline(ss, token, ',');  //read offense
-            play.offense = token;
+            play->offense = token;
             getline(ss, token, ',');  //read defense
-            play.defense = token;
+            play->defense = token;
             getline(ss, token, ',');  //read down
-            play.down = stoi(token);
+            play->down = stoi(token);
             getline(ss, token, ',');  //read toGo
-            play.toGo = stoi(token);
+            play->toGo = stoi(token);
             getline(ss, token, ',');  //read yardLine
-            play.yardLine = stoi(token);
+            play->yardLine = stoi(token);
             getline(ss, token, ',');  //read if result is first down
-            play.resultIsFirstDown = Helpers::booleanResult(stoi(token));
+            play->resultIsFirstDown = Helpers::booleanResult(stoi(token));
             getline(ss, token, ',');  //read description
-            play.description = token;
+            play->description = token;
             getline(ss, token, ',');  //read resultingYards
-            play.resultingYards = stoi(token);
+            play->resultingYards = stoi(token);
             //give weight based on amount of yards lost/gained
-            play.yardsWeight = Helpers::calculateWeight(stoi(token));
+            play->yardsWeight = Helpers::calculateWeight(stoi(token));
             getline(ss, token, ',');  //read formation
-            play.formation = token;
+            play->formation = token;
             getline(ss, token, ',');  //read if isRush
-            play.isRush = Helpers::booleanResult(stoi(token));
+            play->isRush = Helpers::booleanResult(stoi(token));
             getline(ss, token, ',');  //read if isPass
-            play.isPass = Helpers::booleanResult(stoi(token));
+            play->isPass = Helpers::booleanResult(stoi(token));
             getline(ss, token, ',');  //read if isComplete
-            play.isIncomplete = Helpers::booleanResult(stoi(token));
+            play->isIncomplete = Helpers::booleanResult(stoi(token));
             getline(ss, token, ',');  //read if isTouchdown
-            play.isTouchdown = Helpers::booleanResult(stoi(token));
-            if (play.isTouchdown) {
-                play.touchdownWeight = 10.0f;
+            play->isTouchdown = Helpers::booleanResult(stoi(token));
+            if (play->isTouchdown) {
+                play->touchdownWeight = 10.0f;
             }
             getline(ss, token, ',');  //read passType
-            play.passType = token;
+            play->passType = token;
             getline(ss, token, ',');  //read if isSack
-            play.isSack = Helpers::booleanResult(stoi(token));
+            play->isSack = Helpers::booleanResult(stoi(token));
             getline(ss, token, ',');  //read if isInterception
-            play.isInterception = Helpers::booleanResult(stoi(token));
-            if (play.isInterception) {
-                play.interceptionWeight = -100.0f;
+            play->isInterception = Helpers::booleanResult(stoi(token));
+            if (play->isInterception) {
+                play->interceptionWeight = -100.0f;
             }
             getline(ss, token, ',');  //read if isFumble
-            play.isFumble = Helpers::booleanResult(stoi(token));
-            if (play.isFumble) {
-                play.fumbleWeight = -1000.0f;
+            play->isFumble = Helpers::booleanResult(stoi(token));
+            if (play->isFumble) {
+                play->fumbleWeight = -1000.0f;
             }
             getline(ss, token, ',');  //read if isTwoPointConversion
-            play.isTwoPointConversion = Helpers::booleanResult(stoi(token));
+            play->isTwoPointConversion = Helpers::booleanResult(stoi(token));
             getline(ss, token, ',');  //read if isTwoPointConversionSuccessful
-            play.isTwoPointConversionSuccessful = Helpers::booleanResult(stoi(token));
-            if (play.isTwoPointConversionSuccessful) {
-                play.twoPointWeight = 5.0f;
+            play->isTwoPointConversionSuccessful = Helpers::booleanResult(stoi(token));
+            if (play->isTwoPointConversionSuccessful) {
+                play->twoPointWeight = 5.0f;
             }
             getline(ss, token, ',');  //read rushDirection
-            play.rushDirection = token;
+            play->rushDirection = token;
             i++;
         }
             //helps for debugging file
@@ -106,8 +106,8 @@ void PlayHashTable::readDataAndPushIntoHashMap(const string &filename, unordered
         }
 
         //put into hash table
-        string playCode = Helpers::generatePlayCode(play);
-        ht[playCode].insert(&play);
+        string playCode = Helpers::generatePlayCode(*play);
+        ht[playCode].insert(play);
     }
     file.close();
 
