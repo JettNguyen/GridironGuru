@@ -27,3 +27,12 @@ void LinkedList::insert(Play* play) {
     tail->next = play;
     tail = play;
 }
+
+LinkedList::~LinkedList() {
+    while (head->next != tail){
+        Play* temp = head;
+        head = head->next;
+        delete temp;
+    }
+
+};

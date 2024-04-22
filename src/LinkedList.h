@@ -14,6 +14,7 @@ private:
     Play* tail = nullptr;
 public:
     LinkedList() { };
+    ~LinkedList();
 
     Play* getHead();
     void setInitialPlay(Play& play);
