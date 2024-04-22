@@ -65,7 +65,7 @@ int main() {
             cout << "Building Hash Table...\n";
             //so that the hash table is not built again during the run
             hashTableUsed = true;
-//            PlayHashTable::readDataAndPushIntoHashMap(filename, hashMap);
+            PlayHashTable::readDataAndPushIntoHashMap(filename, hashMap);
         }
 
         //prompt current qtr

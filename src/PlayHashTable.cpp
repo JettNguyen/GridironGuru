@@ -4,7 +4,7 @@
 #include "PlayHashTable.h"
 
 
-void PlayHashTable::readDataAndPushIntoHashMap(const string &filename, unordered_map<string, LinkedList/*, PlayHash*/> &ht) {
+void PlayHashTable::readDataAndPushIntoHashMap(const string &filename, vector<LinkedList>& ht) {
 
     ifstream file(filename);
 
@@ -110,5 +110,21 @@ void PlayHashTable::readDataAndPushIntoHashMap(const string &filename, unordered
         ht[playCode].insert(play);
     }
     file.close();
+
+}
+
+int PlayHashTable::hash_func(const std::string &playCode, vector<LinkedList>& ht) {
+    int hashCode = stoi(playCode);
+
+    int previous = PRIMES[0];
+    for(int i : PRIMES){
+        if(i < ht.size()) {
+            previous = i;
+            continue;
+        }
+        break;
+    }
+
+    return hashCode % previous;
 
 }
