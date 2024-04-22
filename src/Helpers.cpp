@@ -3,6 +3,8 @@
 #include <vector>
 #include <cmath>
 #include "Helpers.h"
+#include "PlayHashTable.h"
+
 
 using namespace std;
 
@@ -280,3 +282,4 @@ string Helpers::generatePlayCode(Play &play) {
 
     return playCode;
 }
+

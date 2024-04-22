@@ -1,4 +1,16 @@
-C:\Users\wshao\AppData\Local\Programs\CLion\bin\cmake\win\x64\bin\cmake.exe -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles" -S "C:\Documents\Data Structures+Algorithms Spring 2024\Project 3 GridironGuru" -B "C:\Documents\Data Structures+Algorithms Spring 2024\Project 3 GridironGuru\cmake-build-debug"
--- Configuring done (0.3s)
--- Generating done (0.1s)
--- Build files have been written to: C:/Documents/Data Structures+Algorithms Spring 2024/Project 3 GridironGuru/cmake-build-debug
+/Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" -S /Users/Games/Library/CloudStorage/OneDrive-UniversityofFlorida/2024/Spring/COP3530/GridironGuru -B /Users/Games/Library/CloudStorage/OneDrive-UniversityofFlorida/2024/Spring/COP3530/GridironGuru/cmake-build-debug
+-- The C compiler identification is AppleClang 14.0.0.14000029
+-- The CXX compiler identification is AppleClang 14.0.0.14000029
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /Library/Developer/CommandLineTools/usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /Library/Developer/CommandLineTools/usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Configuring done (1.6s)
+-- Generating done (0.0s)
+-- Build files have been written to: /Users/Games/Library/CloudStorage/OneDrive-UniversityofFlorida/2024/Spring/COP3530/GridironGuru/cmake-build-debug

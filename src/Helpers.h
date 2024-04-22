@@ -1,10 +1,14 @@
 #pragma once
 #include <vector>
 #include "Play.h"
+#include "LinkedList.h"
+
 
 using namespace std;
 
 class Helpers {
+
+
 public:
     static bool validateInput(const string& input, const string& inputType, int lowerBound, int upperBound);
 
