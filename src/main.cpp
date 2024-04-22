@@ -20,7 +20,8 @@ int main() {
 
     //hash map
     //keys are play code strings, values are Linked Lists of Plays
-    vector<LinkedList> hashMap(500, LinkedList());
+    priority_queue<Play, vector<Play>, ComparePlay> hashMaxHeap;
+    vector<LinkedList> hashTable(500, LinkedList());
 
     //welcome screen
     cout << "\n============================================= Welcome to the Gridiron Guru! =============================================\n";
@@ -65,7 +66,7 @@ int main() {
             cout << "Building Hash Table...\n";
             //so that the hash table is not built again during the run
             hashTableUsed = true;
-            PlayHashTable::readDataAndPushIntoHashMap(filename, hashMap);
+            PlayHashTable::readDataAndPushIntoHashMap(filename, hashTable);
         }
 
         //prompt current qtr
@@ -151,7 +152,20 @@ int main() {
             PlayMaxHeap::suggestPlayFromHeap(currentSituation, maxHeap);
         }
         else {
-            //for hash table
+            string currentHashCode = Helpers::generatePlayCode(currentSituation);
+
+            Helpers temp;
+            int index = temp.hash_func(currentHashCode, hashTable);
+            LinkedList plays = hashTable[index];
+            Play* currentPlay = plays.head;
+
+            while (currentPlay != nullptr) {
+                hashMaxHeap.push(*currentPlay);
+                currentPlay = currentPlay->next;
+            }
+
+            PlayMaxHeap::suggestPlayFromHeap(currentSituation, hashMaxHeap);
+
 
         }
     }
