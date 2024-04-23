@@ -7,16 +7,12 @@
 #include "ComparePlay.h"
 
 
-struct PlayHash {
-    size_t operator()(const string& playCode) {
-// using STL's hash function for strings
-  std::hash<string> str_hash;
-   return str_hash(playCode);
-  }
-
-};
 
 class PlayHashTable {
+private:
+    vector<LinkedList> hashTable;
+    int capacity;
+
     const vector<int> PRIMES = {499, 503, 509, 521, 523, 541
             , 547, 557, 563, 569, 571, 577, 587, 593, 599, 601
             , 607, 613, 617, 619, 631, 641, 643, 647, 653, 659
@@ -78,10 +74,10 @@ class PlayHashTable {
             , 5009, 5011};
 
 public:
-    //read data from file and put into hash map
-    static void readDataAndPushIntoHashMap(const string& filename, vector<LinkedList>& ht);
+    PlayHashTable(int initialCapacity);
 
-    //int hash_func(const string& playCode, vector<LinkedList>& ht);
+    //read data from file and put into hash table
+    static void readDataAndPushIntoHashMap(const string& filename, vector<LinkedList>& ht);
 
     void suggestPlayFromHashTable(const Play& currentSituation, priority_queue<Play, vector<Play>, ComparePlay>& maxHeap);
 

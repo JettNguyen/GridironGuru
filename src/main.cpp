@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <queue>
+#include <chrono>
 
 
 #include "Play.h"
@@ -22,7 +23,7 @@ int main() {
     //keys are play code strings, values are Linked Lists of Plays
     priority_queue<Play, vector<Play>, ComparePlay> hashMaxHeap;
     vector<LinkedList> hashTable(500, LinkedList());
-    PlayHashTable table;
+    PlayHashTable table(500);
 
     //welcome screen
     cout << "\n============================================= Welcome to the Gridiron Guru! =============================================\n";
@@ -58,16 +59,30 @@ int main() {
             //for maxHeap
             filename = "../files/pbp2013-2023.csv";
             cout << "Building Heap...\n";
+
             //so that the heap is not built again during the run
             heapUsed = true;
+
+            //logic for lock: https://www.geeksforgeeks.org/measure-execution-time-function-cpp/
+            auto start = chrono::high_resolution_clock::now();
             PlayMaxHeap::readDataAndPushIntoHeap(filename, maxHeap);
+            auto stop = chrono::high_resolution_clock::now();
+            auto time = duration_cast<chrono::microseconds>(stop-start);
+            cout << "Build took " << (float)time.count()/(float)1000000 << " seconds!\n";
         }
         else if (dataStructure == "2" && !hashTableUsed){
             filename = "../files/pbp2013-2023-modified.csv";
             cout << "Building Hash Table...\n";
             //so that the hash table is not built again during the run
             hashTableUsed = true;
+
+            //logic for lock: https://www.geeksforgeeks.org/measure-execution-time-function-cpp/
+            auto start = chrono::high_resolution_clock::now();
             PlayHashTable::readDataAndPushIntoHashMap(filename, hashTable);
+            auto stop = chrono::high_resolution_clock::now();
+            auto time = duration_cast<chrono::microseconds>(stop-start);
+
+            cout << "Build took " << (float)time.count()/(float)1000000 << " seconds!\n";
         }
 
         //prompt current qtr
@@ -153,10 +168,10 @@ int main() {
             PlayMaxHeap::suggestPlayFromHeap(currentSituation, maxHeap);
         }
         else {
+            //for hash table
             string currentHashCode = Helpers::generatePlayCode(currentSituation);
 
-            PlayHashTable temp;
-            int index = temp.hash_func(currentHashCode, hashTable);
+            int index = table.hash_func(currentHashCode, hashTable);
             LinkedList plays = hashTable[index];
             Play* currentPlay = plays.head;
 

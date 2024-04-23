@@ -7,6 +7,14 @@
 #include "PlayHashTable.h"
 #include "ComparePlay.h"
 
+using namespace std;
+
+
+PlayHashTable::PlayHashTable(int initialCapacity) {
+    capacity = initialCapacity;
+    hashTable.resize(initialCapacity);
+}
+
 
 void PlayHashTable::readDataAndPushIntoHashMap(const string &filename, vector<LinkedList>& ht) {
 
@@ -23,7 +31,7 @@ void PlayHashTable::readDataAndPushIntoHashMap(const string &filename, vector<Li
 
     int count = 0;
     const double loadFactor = 0.7;
-    PlayHashTable hashObject;
+    PlayHashTable hashObject(500);
 
     while (getline(file, line)) {
         stringstream ss(line);
@@ -115,13 +123,11 @@ void PlayHashTable::readDataAndPushIntoHashMap(const string &filename, vector<Li
 
         //put into hash table
         string playCode = Helpers::generatePlayCode(*play);
-        PlayHashTable temp;
-        int hashCode = temp.PlayHashTable::hash_func(playCode, ht);
+        int hashCode = hashObject.PlayHashTable::hash_func(playCode, ht);
 
         if((float)count/ht.size() > loadFactor) {
             int newCapacity = ht.capacity();
             hashObject.rehash(ht, newCapacity);
-            //rehash
         }
         ht.at(hashCode).LinkedList::insert(play);
         count++;
@@ -472,23 +478,32 @@ int PlayHashTable::hash_func(const std::string &playCode, vector<LinkedList>& ht
 
     int previous = PRIMES[0];
     for(int i : PRIMES){
-        if(i < ht.size()) {
+        if(i < capacity) {
             previous = i;
             continue;
         }
-        break;
+        else {
+            break;
+        }
     }
     return hashCode % previous;
 }
 
 void PlayHashTable::rehash(vector<LinkedList>& ht, int newCapacity) {
-    /*
-    PlayHashTable newHashTable(newCapacity);
+    vector<LinkedList> newHashTable(newCapacity);
+    //capacity = newCapacity;
 
-    for (int i = 0; i < ht.capacity(); i++) {
-        LinkedList* current = ht[i];
+    for(int i = 0; i < capacity; i++) {
+        Play* current = hashTable[i].getHead();
+        while(current != nullptr) {
+            int newIndex = hash_func(Helpers::generatePlayCode(*current), ht);
+            newHashTable[newIndex].LinkedList::insert(current);
+            current = current->next;
+        }
+
     }
-     */
+    hashTable = move(newHashTable);
+    capacity = newCapacity;
 }
 
 
