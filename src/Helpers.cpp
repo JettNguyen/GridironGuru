@@ -24,7 +24,7 @@ bool Helpers::validateInput(const string& input, const string& inputType, int lo
         }
         catch (exception& err) {
             //should catch if input is not an integer
-            cout << "Error: "<< err.what() << endl;
+            cout << "Error: Input not an integer" << endl;
             return false;
         }
     }
