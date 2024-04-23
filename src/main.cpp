@@ -22,6 +22,8 @@ int main() {
     //keys are play code strings, values are Linked Lists of Plays
     vector<LinkedList> hashMap(500, LinkedList());
 
+    priority_queue<Play, vector<Play>, ComparePlay> hashMaxHeap;
+
     //welcome screen
     cout << "\n============================================= Welcome to the Gridiron Guru! =============================================\n";
     cout << "                                 Developed by Jett Nguyen, Zach Ostroff, and William Shaoul\n\n";
@@ -152,7 +154,18 @@ int main() {
         }
         else {
             //for hash table
+            string currentHashCode = Helpers::generatePlayCode(currentSituation);
 
+            PlayHashTable temp;
+            int index = temp.hash_func(currentHashCode, hashMap);
+            LinkedList plays = hashMap[index];
+            Play* currentPlay = plays.getHead();
+
+            while(currentPlay != nullptr){
+                hashMaxHeap.push(*currentPlay);
+                currentPlay = currentPlay->next;
+            }
+            PlayMaxHeap::suggestPlayFromHeap(currentSituation, hashMaxHeap);
         }
     }
     cout << "Exiting program.\n";

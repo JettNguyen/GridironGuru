@@ -74,7 +74,7 @@ class PlayHashTable {
 ,  4943, 4951, 4957, 4967, 4969, 4973, 4987, 4993, 4999, 5003
 ,  5009, 5011};
 
-   const float maxLF = 0.7;
+   const float MAX_LF = 0.7;
    int count = 0;
 
 public:
@@ -83,4 +83,5 @@ public:
 
     int hash_func(const string& playCode, vector<LinkedList>& ht);
 
+    void rehash(const vector<LinkedList>& ht);
 };

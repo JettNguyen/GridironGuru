@@ -107,7 +107,11 @@ void PlayHashTable::readDataAndPushIntoHashMap(const string &filename, vector<Li
 
         //put into hash table
         string playCode = Helpers::generatePlayCode(*play);
-        ht[playCode].insert(play);
+        PlayHashTable temp;
+        int hashCode = temp.hash_func(playCode, ht);
+        // rehash check
+        ht.at(hashCode).insert(play);
+//        count++;
     }
     file.close();
 
@@ -128,3 +132,5 @@ int PlayHashTable::hash_func(const std::string &playCode, vector<LinkedList>& ht
     return hashCode % previous;
 
 }
+
+

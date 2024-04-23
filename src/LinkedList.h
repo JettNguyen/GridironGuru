@@ -12,7 +12,9 @@ class LinkedList {
 private:
     Play* head = nullptr;
     Play* tail = nullptr;
+
 public:
+    int count = 0;
     LinkedList() { };
     ~LinkedList();
 
