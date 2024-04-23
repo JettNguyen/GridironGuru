@@ -2,11 +2,14 @@
 #include <string>
 #include <vector>
 #include <cmath>
+
+
 #include "Helpers.h"
 #include "PlayHashTable.h"
 
 
 using namespace std;
+
 
 bool Helpers::validateInput(const string& input, const string& inputType, int lowerBound, int upperBound) {
     if (inputType == "int") {
@@ -69,6 +72,7 @@ bool Helpers::validateInput(const string& input, const string& inputType, int lo
     return true;
 }
 
+
 bool Helpers::booleanResult(int boolValue) {
     if (boolValue == 1) {
         return true;
@@ -78,6 +82,7 @@ bool Helpers::booleanResult(int boolValue) {
     }
 }
 
+
 float Helpers::calculateWeight(int yards) {
     if (yards < 0) {
         return 0.0f - static_cast<float>(pow(yards, 0.75));
@@ -86,6 +91,7 @@ float Helpers::calculateWeight(int yards) {
         return static_cast<float>(pow(yards, 0.75));
     }
 }
+
 
 vector<int> Helpers::calculateTimeBounds(int minute ,int second) {
     //returns vector of time bounds that are +- 1:30 from given time
@@ -134,6 +140,7 @@ vector<int> Helpers::calculateTimeBounds(int minute ,int second) {
     return timeBounds;
 }
 
+
 int Helpers::timeToInt(int minute, int second) {
     string returnString;
     int time;
@@ -149,6 +156,7 @@ int Helpers::timeToInt(int minute, int second) {
     time = stoi(returnString);
     return time;
 }
+
 
 vector<int> Helpers::calculateToGoBounds(int toGo) {
     vector<int> toGoBounds = {};
@@ -175,6 +183,7 @@ vector<int> Helpers::calculateToGoBounds(int toGo) {
     return toGoBounds;
 }
 
+
 vector<int> Helpers::calculateYardLineBounds(int yardLine) {
     vector<int> yardLineBounds = {};
 
@@ -196,6 +205,7 @@ vector<int> Helpers::calculateYardLineBounds(int yardLine) {
     return yardLineBounds;
 }
 
+
 string Helpers::formatPercentages(float percentage) {
     string newPercentage = to_string(percentage);
     if (percentage >= 10) {
@@ -206,6 +216,7 @@ string Helpers::formatPercentages(float percentage) {
     }
     return newPercentage;
 }
+
 
 string Helpers::formatTime(int minute, int second) {
     string timeString;
@@ -230,6 +241,7 @@ string Helpers::formatTime(int minute, int second) {
 
     return timeString;
 }
+
 
 string Helpers::generatePlayCode(Play &play) {
     string playCode;
@@ -282,5 +294,3 @@ string Helpers::generatePlayCode(Play &play) {
 
     return playCode;
 }
-
-

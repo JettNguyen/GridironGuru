@@ -10,6 +10,7 @@
 #include "PlayHashTable.h"
 #include "Helpers.h"
 
+
 using namespace std;
 
 
@@ -20,10 +21,11 @@ int main() {
     priority_queue<Play, vector<Play>, ComparePlay> maxHeap;
 
     //hash map
-    //keys are play code strings, values are Linked Lists of Plays
-    priority_queue<Play, vector<Play>, ComparePlay> hashMaxHeap;
     vector<LinkedList> hashTable(500, LinkedList());
     PlayHashTable table(500);
+
+    //for calculation of top plays for hash table
+    priority_queue<Play, vector<Play>, ComparePlay> hashMaxHeap;
 
     //welcome screen
     cout << "\n============================================= Welcome to the Gridiron Guru! =============================================\n";
@@ -68,11 +70,13 @@ int main() {
             PlayMaxHeap::readDataAndPushIntoHeap(filename, maxHeap);
             auto stop = chrono::high_resolution_clock::now();
             auto time = duration_cast<chrono::microseconds>(stop-start);
+
             cout << "Build took " << (float)time.count()/(float)1000000 << " seconds!\n";
         }
         else if (dataStructure == "2" && !hashTableUsed){
             filename = "../files/pbp2013-2023-modified.csv";
             cout << "Building Hash Table...\n";
+
             //so that the hash table is not built again during the run
             hashTableUsed = true;
 
@@ -171,16 +175,17 @@ int main() {
             //for hash table
             string currentHashCode = Helpers::generatePlayCode(currentSituation);
 
+            //finds hash code that has similar plays
             int index = table.hash_func(currentHashCode, hashTable);
             LinkedList plays = hashTable[index];
             Play* currentPlay = plays.head;
 
+            //puts similar plays in a heap to later be calculated
             while (currentPlay != nullptr) {
                 hashMaxHeap.push(*currentPlay);
                 currentPlay = currentPlay->next;
             }
-
-            table.suggestPlayFromHashTable(currentSituation, hashMaxHeap);
+            PlayHashTable::suggestPlayFromHashTable(currentSituation, hashMaxHeap);
         }
     }
     cout << "Exiting program.\n";

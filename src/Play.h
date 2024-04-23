@@ -1,7 +1,9 @@
 #pragma once
 #include <string>
 
+
 using namespace std;
+
 
 //represents a play
 struct Play {

@@ -1,6 +1,7 @@
 #include "Play.h"
 #include "ComparePlay.h"
 
+
 //borrowed logic from Discussion 6 - Heaps & Priority Queues (slide 74)
 //will effectively construct heap based on weightage of favorable outcomes
 bool ComparePlay::operator()(const Play& play1, const Play& play2) {

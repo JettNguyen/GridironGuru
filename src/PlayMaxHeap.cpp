@@ -4,6 +4,7 @@
 #include <queue>
 #include <map>
 
+
 #include "Play.h"
 #include "ComparePlay.h"
 #include "Helpers.h"
@@ -244,7 +245,6 @@ void PlayMaxHeap::suggestPlayFromHeap(const Play& currentSituation, priority_que
     }
 
     //if there are no similar situations within bounds given
-
     if (tempHeap.empty()) {
         cout << "No Match Found! Good Luck!\n\n";
         return;

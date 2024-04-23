@@ -4,13 +4,15 @@
 #include <queue>
 #include <map>
 
+
 #include "PlayHashTable.h"
 #include "ComparePlay.h"
+
 
 using namespace std;
 
 
-PlayHashTable::PlayHashTable(int initialCapacity) {
+PlayHashTable::PlayHashTable(unsigned long initialCapacity) {
     capacity = initialCapacity;
     hashTable.resize(initialCapacity);
 }
@@ -29,8 +31,10 @@ void PlayHashTable::readDataAndPushIntoHashMap(const string &filename, vector<Li
     getline(file, line);
     int i = 0;
 
+    //used for rehashing
     int count = 0;
     const double loadFactor = 0.7;
+
     PlayHashTable hashObject(500);
 
     while (getline(file, line)) {
@@ -125,20 +129,23 @@ void PlayHashTable::readDataAndPushIntoHashMap(const string &filename, vector<Li
         string playCode = Helpers::generatePlayCode(*play);
         int hashCode = hashObject.PlayHashTable::hash_func(playCode, ht);
 
-        if((float)count/ht.size() > loadFactor) {
-            int newCapacity = ht.capacity();
+        //rehash if plays/table size is greater than the load factor
+        if((float)count/(float)ht.size() > loadFactor) {
+            unsigned long newCapacity = ht.capacity();
             hashObject.rehash(ht, newCapacity);
         }
+
         ht.at(hashCode).LinkedList::insert(play);
         count++;
     }
     file.close();
 }
 
+
 //gives result based on given current situation and all given situations for hashTable
-void PlayHashTable::suggestPlayFromHashTable(const Play& currentSituation, priority_queue<Play, vector<Play>, ComparePlay>& maxHeap) {
+void PlayHashTable::suggestPlayFromHashTable(const Play& currentSituation, priority_queue<Play, vector<Play>, ComparePlay>& hashMaxHeap) {
     //copies it so that the heap can be reused multiple times each run
-    priority_queue<Play, vector<Play>, ComparePlay> modifiableHeap = maxHeap;
+    priority_queue<Play, vector<Play>, ComparePlay> modifiableHeap = hashMaxHeap;
     Play bestPlay = modifiableHeap.top();
 
     //stores similar situations
@@ -160,7 +167,7 @@ void PlayHashTable::suggestPlayFromHashTable(const Play& currentSituation, prior
         yardLineLowerBound = Helpers::calculateYardLineBounds(currentSituation.yardLine)[0];
         yardLineUpperBound = Helpers::calculateYardLineBounds(currentSituation.yardLine)[1];
     }
-        //if it is determining a 2 point conversion
+    //if it is determining a 2 point conversion
     else {
         toGoLowerBound = 0;
         toGoUpperBound = 0;
@@ -265,7 +272,6 @@ void PlayHashTable::suggestPlayFromHashTable(const Play& currentSituation, prior
     }
 
     //if there are no similar situations within bounds given
-
     if (tempHeap.empty()) {
         cout << "No Match Found! Good Luck!\n\n";
         return;
@@ -473,6 +479,8 @@ void PlayHashTable::suggestPlayFromHashTable(const Play& currentSituation, prior
     cout << "\n============================================= Welcome back to the Gridiron Guru! ============================================\n";
 }
 
+
+//will make index to the vector
 int PlayHashTable::hash_func(const std::string &playCode, vector<LinkedList>& ht) {
     int hashCode = stoi(playCode);
 
@@ -489,7 +497,9 @@ int PlayHashTable::hash_func(const std::string &playCode, vector<LinkedList>& ht
     return hashCode % previous;
 }
 
-void PlayHashTable::rehash(vector<LinkedList>& ht, int newCapacity) {
+
+//for when the load factor exceeds the set load factor
+void PlayHashTable::rehash(vector<LinkedList>& ht, unsigned long newCapacity) {
     vector<LinkedList> newHashTable(newCapacity);
     //capacity = newCapacity;
 
@@ -502,8 +512,6 @@ void PlayHashTable::rehash(vector<LinkedList>& ht, int newCapacity) {
         }
 
     }
-    hashTable = move(newHashTable);
+    hashTable = std::move(newHashTable);
     capacity = newCapacity;
 }
-
-

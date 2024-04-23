@@ -3,15 +3,18 @@
 #include <unordered_map>
 #include <queue>
 
+
 #include "Helpers.h"
 #include "ComparePlay.h"
 
+
+using namespace std;
 
 
 class PlayHashTable {
 private:
     vector<LinkedList> hashTable;
-    int capacity;
+    unsigned long capacity;
 
     const vector<int> PRIMES = {499, 503, 509, 521, 523, 541
             , 547, 557, 563, 569, 571, 577, 587, 593, 599, 601
@@ -74,16 +77,13 @@ private:
             , 5009, 5011};
 
 public:
-    PlayHashTable(int initialCapacity);
+    PlayHashTable(unsigned long initialCapacity);
 
-    //read data from file and put into hash table
     static void readDataAndPushIntoHashMap(const string& filename, vector<LinkedList>& ht);
 
-    void suggestPlayFromHashTable(const Play& currentSituation, priority_queue<Play, vector<Play>, ComparePlay>& maxHeap);
+    static void suggestPlayFromHashTable(const Play& currentSituation, priority_queue<Play, vector<Play>, ComparePlay>& maxHeap);
 
     int hash_func(const std::string &playCode, vector<LinkedList>& ht);
 
-    void rehash(vector<LinkedList>& ht, int newCapacity);
-
-
+    void rehash(vector<LinkedList>& ht, unsigned long newCapacity);
 };
