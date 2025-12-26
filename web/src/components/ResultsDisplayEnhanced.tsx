@@ -1,4 +1,4 @@
-import { AnalysisResult, PlayTypeStats } from '../types/Play';
+import { AnalysisResult } from '../types/Play';
 import { formatPercentage, formatTime } from '../utils/helpers';
 import './ResultsDisplay.css';
 
@@ -36,7 +36,7 @@ function ResultsDisplay({ result, analysisTime }: ResultsDisplayProps) {
     );
   }
 
-  const { totalSimilarPlays, idealPlays, likelihoods, bestPlay, runVsPass, playTypeBreakdown, riskAssessment, averageYards, recommendedStrategy } = result;
+  const { totalSimilarPlays, likelihoods, bestPlay, runVsPass, playTypeBreakdown, riskAssessment, averageYards, recommendedStrategy } = result;
 
   return (
     <div className="results-container">

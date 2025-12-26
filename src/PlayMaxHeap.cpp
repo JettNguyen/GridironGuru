@@ -62,7 +62,6 @@ void PlayMaxHeap::readDataAndPushIntoHeap(const string& filename, priority_queue
             play.description = token;
             getline(ss, token, ',');  //read resultingYards
             play.resultingYards = stoi(token);
-            //give weight based on amount of yards lost/gained
             play.yardsWeight = Helpers::calculateWeight(stoi(token));
             getline(ss, token, ',');  //read formation
             play.formation = token;

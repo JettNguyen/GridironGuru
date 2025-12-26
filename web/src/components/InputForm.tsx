@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { CurrentSituation } from '../types/Play';
 import { timeToInt, validateQuarter, validateDown, validateYardsToGo, validateYardLine, parseTimeString } from '../utils/helpers';
 import './InputForm.css';
@@ -17,15 +17,12 @@ function InputForm({ onAnalyze, disabled, playCount }: InputFormProps) {
   const [down, setDown] = useState('1');
   const [yardsToGo, setYardsToGo] = useState('10');
   const [yardLine, setYardLine] = useState('50');
-  const [time, setTime] = useState('07:30');
+  const [minutes, setMinutes] = useState('07');
+  const [seconds, setSeconds] = useState('30');
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const showGhostColon = !time.includes(':');
-  const timeWrapperClass = [
-    'time-input-wrapper',
-    disabled ? 'is-disabled' : '',
-    showGhostColon ? 'show-ghost' : ''
-  ].filter(Boolean).join(' ');
+  const minuteOptions = useMemo(() => Array.from({ length: 16 }, (_, i) => i.toString().padStart(2, '0')), []);
+  const secondOptions = useMemo(() => Array.from({ length: 60 }, (_, i) => i.toString().padStart(2, '0')), []);
 
   const setFieldError = (field: string, message?: string) => {
     setErrors(prev => {
@@ -46,49 +43,6 @@ function InputForm({ onAnalyze, disabled, playCount }: InputFormProps) {
     }
     const numeric = Math.max(min, Math.min(parseInt(digitsOnly, 10), max));
     return String(numeric);
-  };
-
-  // Normalizes loose numeric input into mm:ss while clamping to 15:00.
-  const formatClockValue = (value: string): string => {
-    const digits = value.replace(/\D/g, '').slice(0, 4);
-    if (digits.length === 0) {
-      return '';
-    }
-
-    let minutes: number;
-    let seconds: number;
-
-    if (digits.length <= 2) {
-      minutes = parseInt(digits, 10);
-      seconds = 0;
-    } else {
-      minutes = parseInt(digits.slice(0, digits.length - 2), 10);
-      seconds = parseInt(digits.slice(-2), 10);
-    }
-
-    if (Number.isNaN(minutes)) minutes = 0;
-    if (Number.isNaN(seconds)) seconds = 0;
-
-    if (seconds > 59) {
-      minutes += Math.floor(seconds / 60);
-      seconds = seconds % 60;
-    }
-
-    if (minutes > 15) {
-      minutes = 15;
-      seconds = 0;
-    } else if (minutes === 15 && seconds > 0) {
-      seconds = 0;
-    }
-
-    const minuteStr = minutes.toString().padStart(2, '0');
-    const secondStr = seconds.toString().padStart(2, '0');
-
-    return `${minuteStr}:${secondStr}`;
-  };
-
-  const stripToClockDigits = (value: string): string => {
-    return value.replace(/\D/g, '').slice(0, 4);
   };
 
   const handleQuarterChange = (value: string) => {
@@ -129,28 +83,22 @@ function InputForm({ onAnalyze, disabled, playCount }: InputFormProps) {
     setFieldError('yardLine', validateYardLine(position) ? undefined : 'Yard line must be 1-99');
   };
 
-  const handleTimeChange = (value: string) => {
-    const digits = stripToClockDigits(value);
-    setTime(digits);
+  const handleMinutesChange = (value: string) => {
+    setMinutes(value);
+    setFieldError('time', undefined);
 
-    if (digits === '') {
-      setFieldError('time', 'Enter time remaining');
-    } else {
-      setFieldError('time', undefined);
+    if (value === '15' && seconds !== '00') {
+      setSeconds('00');
     }
   };
 
-  const handleTimeBlur = () => {
-    if (time === '') {
-      setFieldError('time', 'Enter time remaining');
+  const handleSecondsChange = (value: string) => {
+    if (minutes === '15') {
+      setSeconds('00');
       return;
     }
-
-    const formatted = formatClockValue(time);
-    setTime(formatted);
-
-    const parsed = parseTimeString(formatted);
-    setFieldError('time', parsed ? undefined : 'Time must be between 00:00 and 15:00');
+    setSeconds(value);
+    setFieldError('time', undefined);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -178,11 +126,7 @@ function InputForm({ onAnalyze, disabled, playCount }: InputFormProps) {
       newErrors.yardLine = 'Yard line must be 1-99';
     }
 
-    const normalizedTime = time.includes(':') ? time : formatClockValue(time);
-    if (normalizedTime !== time) {
-      setTime(normalizedTime);
-    }
-
+    const normalizedTime = `${minutes}:${seconds}`;
     const parsedTime = parseTimeString(normalizedTime);
     if (!parsedTime) {
       newErrors.time = 'Time must be in mm:ss format (max 15:00)';
@@ -314,20 +258,40 @@ function InputForm({ onAnalyze, disabled, playCount }: InputFormProps) {
         </div>
 
         <div className={`form-group ${errors.time ? 'has-error' : ''}`}>
-          <label htmlFor="time">Time Remaining (mm:ss)</label>
-          <div className={timeWrapperClass}>
-            <input
-              type="text"
-              id="time"
-              className="time-input-field"
-              value={time}
-              onChange={(e) => handleTimeChange(e.target.value)}
-              onBlur={handleTimeBlur}
-              disabled={disabled}
-              placeholder="07:30"
-              inputMode="numeric"
-            />
-            {showGhostColon && <span className="ghost-colon">:</span>}
+          <label>Time Remaining</label>
+          <div className={`time-scrollers ${disabled ? 'is-disabled' : ''}`}>
+            <div className="time-scroll">
+              <span className="time-scroll-label">Minutes</span>
+              <select
+                value={minutes}
+                onChange={(e) => handleMinutesChange(e.target.value)}
+                disabled={disabled}
+                size={5}
+                className="time-scroll-select"
+              >
+                {minuteOptions.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="time-scroll">
+              <span className="time-scroll-label">Seconds</span>
+              <select
+                value={minutes === '15' ? '00' : seconds}
+                onChange={(e) => handleSecondsChange(e.target.value)}
+                disabled={disabled || minutes === '15'}
+                size={6}
+                className="time-scroll-select"
+              >
+                {(minutes === '15' ? ['00'] : secondOptions).map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
           {errors.time && <span className="error-msg">{errors.time}</span>}
         </div>

@@ -1,5 +1,3 @@
-// MaxHeap-based play analysis entry point
-
 import {
 	Play,
 	CurrentSituation,

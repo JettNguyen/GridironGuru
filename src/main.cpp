@@ -58,14 +58,11 @@ int main() {
         }
 
         if (dataStructure == "1" && !heapUsed) {
-            //for maxHeap
             filename = "../files/pbp2013-2024.csv";
             cout << "Building Heap...\n";
 
-            //so that the heap is not built again during the run
             heapUsed = true;
 
-            //logic for lock: https://www.geeksforgeeks.org/measure-execution-time-function-cpp/
             auto start = chrono::high_resolution_clock::now();
             PlayMaxHeap::readDataAndPushIntoHeap(filename, maxHeap);
             auto stop = chrono::high_resolution_clock::now();
@@ -77,10 +74,8 @@ int main() {
             filename = "../files/pbp2013-2024.csv";
             cout << "Building Hash Table...\n";
 
-            //so that the hash table is not built again during the run
             hashTableUsed = true;
 
-            //logic for lock: https://www.geeksforgeeks.org/measure-execution-time-function-cpp/
             auto start = chrono::high_resolution_clock::now();
             PlayHashTable::readDataAndPushIntoHashMap(filename, hashTable);
             auto stop = chrono::high_resolution_clock::now();

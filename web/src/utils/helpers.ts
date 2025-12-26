@@ -1,5 +1,3 @@
-// Helper functions ported from Helpers.cpp
-
 import { Play, CurrentSituation } from '../types/Play';
 
 export function booleanResult(val: number): boolean {

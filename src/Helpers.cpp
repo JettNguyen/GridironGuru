@@ -94,18 +94,12 @@ float Helpers::calculateWeight(int yards) {
 
 
 vector<int> Helpers::calculateTimeBounds(int minute ,int second) {
-    //returns vector of time bounds that are +- 1:30 from given time
-    //this range is tight enough to give a very similar situation but loose enough to find a good amount
-    //[lowerTimeAsInt, upperTimeAsInt]
     vector<int> timeBounds;
     int lowerMinute = 0;
     int upperMinute;
     int lowerSecond;
     int upperSecond;
 
-
-    //push back lower bound
-    //will have to subtract 2 minutes if condition is met
     if (second < 30) {
         if (minute < 2) {
             lowerMinute = 0;
@@ -121,7 +115,6 @@ vector<int> Helpers::calculateTimeBounds(int minute ,int second) {
     }
     timeBounds.push_back(timeToInt(lowerMinute, lowerSecond));
 
-    //push back upper bound
     if (second >= 30) {
         if (minute > 13) {
             upperMinute = 15;
@@ -161,19 +154,16 @@ int Helpers::timeToInt(int minute, int second) {
 vector<int> Helpers::calculateToGoBounds(int toGo) {
     vector<int> toGoBounds = {};
 
-    //for two point conversion cases, it will always be 0
     if (toGo == 0) {
         return {0, 0};
     }
 
-    //can't go below 1, 0 toGo in .csv file is for placeholders
     if (toGo < 2) {
         toGoBounds.push_back(1);
     }
     else {
         toGoBounds.push_back(toGo-1);
     }
-    //can't go above 99
     if (toGo > 98) {
         toGoBounds.push_back(99);
     }
@@ -187,15 +177,12 @@ vector<int> Helpers::calculateToGoBounds(int toGo) {
 vector<int> Helpers::calculateYardLineBounds(int yardLine) {
     vector<int> yardLineBounds = {};
 
-    //can't go below 0
     if (yardLine < 5) {
         yardLineBounds.push_back(0);
     }
     else {
         yardLineBounds.push_back(yardLine-5);
     }
-    //can't go above 100
-    //but 100 is for placeholders in the .csv file, so limit to 99
     if (yardLine > 94) {
         yardLineBounds.push_back(99);
     }
@@ -245,16 +232,10 @@ string Helpers::formatTime(int minute, int second) {
 
 string Helpers::generatePlayCode(Play &play) {
     string playCode;
-    // quarter
-    // digits 1-4
+
     playCode += to_string(play.quarter);
-    // down
-    // digits 0-4
     playCode += to_string(play.down);
 
-    // yards to go
-    // digits 0-4 based on ranges of
-    // 0: 1-3; 1: 4-7; 2: 8-13; 3: 14-20; 4: >=21
     int yds2go = play.toGo;
     if(yds2go>=1 && yds2go<=3)
         playCode += "0";
@@ -271,14 +252,8 @@ string Helpers::generatePlayCode(Play &play) {
     else if(yds2go>=21)
         playCode += "4";
 
-
-    // yard line
-    // digits 0-9 (decimal is truncated when / 10)
     playCode += to_string(play.yardLine / 10);
 
-    // time
-    // digits 0-3 based on ranges of
-    // 0: 15:00-7:31; 1: 7:30-4:31; 2: 4:30-2:01; 3: <=2:00
     int timeInSeconds = play.minutes*60 + play.seconds;
     if(timeInSeconds<=900 && timeInSeconds>=451)
         playCode += "0";

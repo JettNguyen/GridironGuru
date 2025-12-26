@@ -38,6 +38,5 @@ Play::Play(){
     isTwoPointConversionSuccessful = false;
     twoPointWeight = 0.0f;
     rushDirection = 0.0f;
-    // for the hash table's separate chaining
     next = nullptr;
 }

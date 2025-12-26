@@ -1,5 +1,3 @@
-// Play data structure matching the C++ implementation
-
 export interface Play {
   gameID: number;
   gameDate: string;

@@ -1,5 +1,3 @@
-// Data loader for CSV play-by-play data
-
 import Papa from 'papaparse';
 import { Play, createEmptyPlay } from '../types/Play';
 import { booleanResult, calculateWeight, timeToInt } from './helpers';
@@ -26,7 +24,7 @@ export async function loadPlayData(
       download: true,
       header: false,
       skipEmptyLines: true,
-      step: (row, parser) => {
+      step: (row) => {
         const data = row.data as string[];
         
         // skip header row
