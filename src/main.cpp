@@ -59,7 +59,7 @@ int main() {
 
         if (dataStructure == "1" && !heapUsed) {
             //for maxHeap
-            filename = "../files/pbp2013-2023.csv";
+            filename = "../files/pbp2013-2024.csv";
             cout << "Building Heap...\n";
 
             //so that the heap is not built again during the run
@@ -74,7 +74,7 @@ int main() {
             cout << "Build took " << (float)time.count()/(float)1000000 << " seconds!\n";
         }
         else if (dataStructure == "2" && !hashTableUsed){
-            filename = "../files/pbp2013-2023-modified.csv";
+            filename = "../files/pbp2013-2024.csv";
             cout << "Building Hash Table...\n";
 
             //so that the hash table is not built again during the run
@@ -164,7 +164,7 @@ int main() {
             currentSituation.isTwoPointConversion = false;
         }
 
-        cout << "Analyzing over 485,000 plays from 2013-2023...\n";
+        cout << "Analyzing over 538,000 plays from 2013-2024...\n";
 
         //depending on chosen data structure, will suggest plays differently
         if (dataStructure == "1") {

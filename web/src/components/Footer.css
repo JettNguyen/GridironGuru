@@ -1,0 +1,36 @@
+.footer {
+  background: #0f1612;
+  color: #9ca3af;
+  padding: 1.5rem 1rem;
+  text-align: center;
+  margin-top: auto;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.footer-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.credits {
+  margin: 0 0 0.4rem;
+  font-weight: 500;
+  color: #d1d5db;
+}
+
+.data-info {
+  margin: 0 0 0.85rem;
+  font-size: 0.85rem;
+}
+
+.links a {
+  color: #4ade80;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.15s;
+}
+
+.links a:hover {
+  color: #86efac;
+  text-decoration: underline;
+}

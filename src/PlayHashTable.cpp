@@ -43,80 +43,79 @@ void PlayHashTable::readDataAndPushIntoHashMap(const string &filename, vector<Li
 
         Play* play = new Play();
         try {
-            getline(ss, token, ',');  //read gameID
+            getline(ss, token, ',');  // read gameID
             play->gameID = stoi(token);
-            getline(ss, token, ',');  //read gameDate
+            getline(ss, token, ',');  // read gameDate
             play->gameDate = token;
-            getline(ss, token, ',');  //read playType
-            // if play type is blank, a no play, or a timeout/punt/extra pt/QB kneel
-            // move to next line
-            /// DONE TO REDUCE # OF HASH TABLE INSERTIONS
-            if(token.empty() || token == "NO PLAY" || token == "TIMEOUT" ||
-            token == "KICK OFF" || token == "PUNT" || token == "EXTRA POINT" ||
-            token == "QB KNEEL"){
-                continue;
-            }
-            play->playType = token;
-            getline(ss, token, ',');  //read qtr
+            getline(ss, token, ',');  // read quarter
             play->quarter = stoi(token);
-            getline(ss, token, ',');  //read minute
+            getline(ss, token, ',');  // read minute
             play->minutes = stoi(token);
-            getline(ss, token, ',');  //read second
+            getline(ss, token, ',');  // read second
             play->seconds = stoi(token);
             play->timeAsInt = Helpers::timeToInt(play->minutes, play->seconds);
-            getline(ss, token, ',');  //read offense
+            getline(ss, token, ',');  // read offense
             play->offense = token;
-            getline(ss, token, ',');  //read defense
+            getline(ss, token, ',');  // read defense
             play->defense = token;
-            getline(ss, token, ',');  //read down
+            getline(ss, token, ',');  // read down
             play->down = stoi(token);
-            getline(ss, token, ',');  //read toGo
+            getline(ss, token, ',');  // read toGo
             play->toGo = stoi(token);
-            getline(ss, token, ',');  //read yardLine
+            getline(ss, token, ',');  // read yardLine
             play->yardLine = stoi(token);
-            getline(ss, token, ',');  //read if result is first down
+            getline(ss, token, ',');  // read if result is first down
             play->resultIsFirstDown = Helpers::booleanResult(stoi(token));
-            getline(ss, token, ',');  //read description
+            getline(ss, token, ',');  // read description
             play->description = token;
-            getline(ss, token, ',');  //read resultingYards
+            getline(ss, token, ',');  // read resultingYards
             play->resultingYards = stoi(token);
-            //give weight based on amount of yards lost/gained
-            play->yardsWeight = Helpers::calculateWeight(stoi(token));
-            getline(ss, token, ',');  //read formation
+            play->yardsWeight = Helpers::calculateWeight(play->resultingYards);
+            getline(ss, token, ',');  // read formation
             play->formation = token;
-            getline(ss, token, ',');  //read if isRush
+            getline(ss, token, ',');  // read playType
+            const string playType = token;
+            // skip unwanted play types to keep the hash table lean
+            if(playType.empty() || playType == "NO PLAY" || playType == "TIMEOUT" ||
+               playType == "KICK OFF" || playType == "PUNT" || playType == "EXTRA POINT" ||
+               playType == "QB KNEEL"){
+                delete play;
+                continue;
+            }
+            play->playType = playType;
+            getline(ss, token, ',');  // read if isRush
             play->isRush = Helpers::booleanResult(stoi(token));
-            getline(ss, token, ',');  //read if isPass
+            getline(ss, token, ',');  // read if isPass
             play->isPass = Helpers::booleanResult(stoi(token));
-            getline(ss, token, ',');  //read if isComplete
+            getline(ss, token, ',');  // read if isIncomplete
             play->isIncomplete = Helpers::booleanResult(stoi(token));
-            getline(ss, token, ',');  //read if isTouchdown
+            getline(ss, token, ',');  // read if isTouchdown
             play->isTouchdown = Helpers::booleanResult(stoi(token));
             if (play->isTouchdown) {
                 play->touchdownWeight = 10.0f;
             }
-            getline(ss, token, ',');  //read passType
+            getline(ss, token, ',');  // read passType
             play->passType = token;
-            getline(ss, token, ',');  //read if isSack
+            getline(ss, token, ',');  // read if isSack
             play->isSack = Helpers::booleanResult(stoi(token));
-            getline(ss, token, ',');  //read if isInterception
+            getline(ss, token, ',');  // read if isInterception
             play->isInterception = Helpers::booleanResult(stoi(token));
             if (play->isInterception) {
                 play->interceptionWeight = -100.0f;
             }
-            getline(ss, token, ',');  //read if isFumble
+            getline(ss, token, ',');  // read if isFumble
             play->isFumble = Helpers::booleanResult(stoi(token));
             if (play->isFumble) {
                 play->fumbleWeight = -1000.0f;
             }
-            getline(ss, token, ',');  //read if isTwoPointConversion
+            getline(ss, token, ',');  // read if isTwoPointConversion
             play->isTwoPointConversion = Helpers::booleanResult(stoi(token));
-            getline(ss, token, ',');  //read if isTwoPointConversionSuccessful
+            getline(ss, token, ',');  // read if isTwoPointConversionSuccessful
             play->isTwoPointConversionSuccessful = Helpers::booleanResult(stoi(token));
             if (play->isTwoPointConversionSuccessful) {
                 play->twoPointWeight = 5.0f;
             }
-            getline(ss, token, ',');  //read rushDirection
+            getline(ss, token, ',');  // read rushDirection
             play->rushDirection = token;
             i++;
         }
